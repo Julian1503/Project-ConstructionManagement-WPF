@@ -1,0 +1,56 @@
+﻿<UserControl x:Class="GestionObraWPF.Views.Reportes.ReporteChequeEntrada"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+           xmlns:prism="http://prismlibrary.com/"            
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             prism:ViewModelLocator.AutoWireViewModel="True">
+    <UserControl.InputBindings>
+        <KeyBinding Key="Return" Command="{Binding Buscar}" CommandTarget="{Binding ElementName=txt}" />
+    </UserControl.InputBindings>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="150"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="200"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0"/>
+        <DataGrid  Grid.Row="1" TextBlock.TextAlignment="Center" x:Name="grilla" AutoGenerateColumns="False" CanUserResizeColumns="False"  IsTextSearchEnabled="True" IsReadOnly="True" ItemsSource="{Binding ChequeEntrada}" SelectionMode="Extended" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Fecha de emision" Binding="{Binding FechaDesde,StringFormat=dd/MM/yyyy}"/>
+                <DataGridTextColumn Header="Fecha de vencimiento" Binding="{Binding FechaHasta,StringFormat=dd/MM/yyyy}"/>
+                <DataGridTextColumn Header="Banco" Binding="{Binding Banco.RazonSocial}"/>
+                <DataGridTextColumn Header="Usado en" Binding="{Binding Usado}"/>
+                <DataGridTextColumn Header="Serie" Binding="{Binding Serie}"/>
+                <DataGridTextColumn Header="Numero" Binding="{Binding Numero}"/>
+                <DataGridTextColumn Header="Emitido por" Binding="{Binding EmitidoPor}"/>
+                <DataGridTextColumn Header="Concepto" Binding="{Binding Concepto}"/>
+                <DataGridTextColumn Header="Monto" Binding="{Binding Monto,StringFormat=C}"/>
+                <DataGridTextColumn Header="Monto descontado" Binding="{Binding MontoContado,StringFormat=C}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <TextBlock FontFamily="Poppins" FontSize="18" Text="Cheques de entrada" Margin="10"/>
+        <StackPanel HorizontalAlignment="Center"  Margin="10" Grid.Column="0" Grid.ColumnSpan="3">
+            <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="50,0">
+                <DatePicker md:HintAssist.Hint="Fecha desde" DisplayDateStart="01-01-2000" SelectedDateFormat="Short" SelectedDate="{Binding FechaDesde}" Margin="0,0,30,0"/>
+                <DatePicker md:HintAssist.Hint="Fecha hasta" DisplayDateStart="01-01-2000" SelectedDateFormat="Short" SelectedDate="{Binding FechaHasta}" Margin="0,0,30,0" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <ToggleButton IsChecked="{Binding ActivarConcepto}" Margin="10,0"/>
+                <TextBox Style="{DynamicResource MaterialDesignFloatingHintTextBox}" Text="{Binding Concepto,UpdateSourceTrigger=PropertyChanged}"  IsEnabled="{Binding ActivarConcepto}" Width="200" md:HintAssist.Hint="Concepto"/>
+                <Button Margin="10,0" Command="{Binding FiltrarCommand}" Content="Filtrar"/>
+                <Button Margin="10,0" Click="Button_Click"  Content="Exportar"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <ToggleButton IsChecked="{Binding ActivarDePara}" Margin="10,0"/>
+                <TextBox Style="{DynamicResource MaterialDesignFloatingHintTextBox}" Text="{Binding DePara,UpdateSourceTrigger=PropertyChanged}"  IsEnabled="{Binding ActivarDePara}" Width="200" md:HintAssist.Hint="Emitido por"/>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Grid.IsSharedSizeScope="False"  VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10">
+            <TextBlock FontFamily="Poppins" FontSize="18" Text="{Binding Monto,StringFormat=Total: {0:C}}"/>
+            <TextBlock FontFamily="Poppins" FontSize="18" Text="{Binding Total,StringFormat=Total descontado: {0:C}}"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

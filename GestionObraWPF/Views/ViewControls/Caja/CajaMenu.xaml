@@ -1,0 +1,45 @@
+﻿<UserControl x:Class="GestionObraWPF.Views.ViewControls.Caja.CajaMenu"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:caja="clr-namespace:GestionObraWPF.Views.ViewControls.Caja"
+             xmlns:as="clr-namespace:GestionObraWPF.Views.ViewControls.Banco"
+             xmlns:prism="http://prismlibrary.com/"             
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             prism:ViewModelLocator.AutoWireViewModel="True">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <caja:Caja x:Key="principal"/>
+            <caja:CajaCerradas x:Key="reporte"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <md:Transitioner Grid.ColumnSpan="2" Name="Transitioner" Grid.Column="0" SelectedIndex="0" DefaultTransitionOrigin="1,1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="100"/>
+                </Grid.ColumnDefinitions>
+                <ContentControl Content="{StaticResource principal}"/>
+                <Button Grid.Column="1" Command="{x:Static md:Transitioner.MoveNextCommand}" Style="{StaticResource MaterialDesignIconForegroundButton}">
+                    <md:PackIcon Kind="ArrowRightCircle"/>
+                </Button>
+            </Grid>
+            <md:TransitionerSlide TransitionOrigin="0.25, 0.25">
+                <md:TransitionerSlide.BackwardWipe>
+                    <md:SlideOutWipe/>
+                </md:TransitionerSlide.BackwardWipe>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="100"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0"  Command="{x:Static md:Transitioner.MovePreviousCommand}" Style="{StaticResource MaterialDesignIconForegroundButton}">
+                        <md:PackIcon Kind="ArrowLeftCircle"/>
+                    </Button>
+                    <ContentControl Grid.Column="1" Content="{StaticResource reporte}"/>
+                </Grid>
+            </md:TransitionerSlide>
+        </md:Transitioner>
+    </Grid>
+</UserControl>

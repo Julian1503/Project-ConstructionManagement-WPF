@@ -1,0 +1,107 @@
+﻿<UserControl x:Class="GestionObraWPF.Views.ViewControls.Banco.BancoMenu"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:prism="http://prismlibrary.com/"         
+             xmlns:banco="clr-namespace:GestionObraWPF.Views.ViewControls.Banco"
+             xmlns:caja="clr-namespace:GestionObraWPF.Views.ViewControls.Caja"
+             prism:ViewModelLocator.AutoWireViewModel="True" Background="White">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <caja:ChequeEntrada x:Key="chequeEntrada"/>
+            <caja:ComprobanteEntrada x:Key="ComproEntr"/>
+            <banco:TransferenciaEntrada x:Key="transfEntr"/>
+            <banco:DepositoEntrada x:Key="depEntr"/>
+            <banco:TransferenciaSalida x:Key="transfSali"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="300"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="180*"/>
+        </Grid.RowDefinitions>
+        <Image Opacity="0.8"  Stretch="UniformToFill" Source="https://www.esan.edu.pe/apuntes-empresariales/2017/03/24/principal-siete-practicas.jpg" Grid.ColumnSpan="2"   />
+        
+        <TextBlock Text="Registrar Entrada" FontSize="18" FontFamily="Poppins" Margin="0,10" TextAlignment="Center" Grid.Row="1"/>
+        <md:Card Grid.Row="2" HorizontalAlignment="Center" Padding="3">
+            <StackPanel Orientation="Horizontal">
+                <Button Height="70" Width="140"  Margin="1" Command="{Binding AbrirCheque}">
+                    <StackPanel>
+                        <md:PackIcon Kind="CheckBook" Height="40" Width="40" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Cheque"/>
+                    </StackPanel>
+                </Button>
+                <Button Height="70" Width="140"  Margin="1"  Command="{Binding AbrirDepositoEntrada}">
+                    <StackPanel>
+                        <md:PackIcon Kind="BankTransfer" Height="40" Width="40" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Deposito"/>
+                    </StackPanel>
+                </Button>
+                <Button Height="70" Width="140"  Margin="1"  Command="{Binding AbrirTransfEntrada}">
+                    <StackPanel>
+                        <md:PackIcon Kind="BankTransferIn" Height="40" Width="40" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Transferencia"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </md:Card>
+        <TextBlock Text="Registrar Salidas" FontSize="18" FontFamily="Poppins" Margin="0,10" TextAlignment="Center" Grid.Column="1" Grid.Row="1"/>
+        <md:Card Grid.Row="2" HorizontalAlignment="Center" Grid.Column="1" Padding="3">
+            <StackPanel Orientation="Horizontal">
+                <Button Height="70" Width="140"  Margin="1" Command="{Binding AbrirDepositoSalida}">
+                    <StackPanel>
+                        <md:PackIcon Kind="BankTransfer" Height="40" Width="40" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Extraccion"/>
+                    </StackPanel>
+                </Button>
+                <Button Height="70" Width="140"  Margin="1"  Command="{Binding AbrirTransfSalida}">
+                    <StackPanel>
+                        <md:PackIcon Kind="BankTransferOut" Height="40" Width="40" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Transferencia"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </md:Card>
+
+        <md:DialogHost IsOpen="{Binding ChequeEntrada}" Grid.ColumnSpan="2" Grid.RowSpan="3">
+            <md:DialogHost.DialogContent >
+                <ContentControl Content="{StaticResource chequeEntrada}"/>
+            </md:DialogHost.DialogContent>
+        </md:DialogHost>
+        <md:DialogHost IsOpen="{Binding TransferenciaEntrada}" Grid.ColumnSpan="2" Grid.RowSpan="3">
+            <md:DialogHost.DialogContent >
+                <ContentControl Content="{StaticResource transfEntr}"/>
+            </md:DialogHost.DialogContent>
+        </md:DialogHost>
+        <md:DialogHost IsOpen="{Binding TransferenciaSalida}" Grid.ColumnSpan="2" Grid.RowSpan="3">
+            <md:DialogHost.DialogContent >
+                <ContentControl Content="{StaticResource transfSali}"/>
+            </md:DialogHost.DialogContent>
+        </md:DialogHost>
+        <md:DialogHost IsOpen="{Binding DepositoEntrada}" Grid.ColumnSpan="2" Grid.RowSpan="3">
+            <md:DialogHost.DialogContent >
+                <ContentControl Content="{StaticResource depEntr}"/>
+            </md:DialogHost.DialogContent>
+        </md:DialogHost>
+        <md:DialogHost IsOpen="{Binding DepositoSalida}" Grid.ColumnSpan="2" Grid.RowSpan="3">
+            <md:DialogHost.DialogContent >
+                <StackPanel  Margin="10">
+                    <ComboBox IsEditable="True" md:HintAssist.Hint="Banco" IsReadOnly="True" ItemsSource="{Binding Bancos}" SelectedItem="{Binding Banco}" DisplayMemberPath="RazonSocial" Width="300"/>
+                    <TextBox PreviewTextInput="NumberValidationTextBox" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" Text="{Binding Operacion.CodigoCausal}"  IsEnabled="{Binding ControlesDialog}" Width="300" md:HintAssist.Hint="Numero"/>
+                    <TextBox Style="{DynamicResource MaterialDesignFloatingHintTextBox}" Text="{Binding Extraccion, UpdateSourceTrigger=PropertyChanged}"  IsEnabled="{Binding ControlesDialog}" Width="300" md:HintAssist.Hint="Monto a extraer"/>
+                    <DatePicker HorizontalAlignment="Center" Style="{DynamicResource MaterialDesignFloatingHintDatePicker}"  IsEnabled="{Binding ControlesDialog}" Width="250" md:HintAssist.Hint="Fecha" SelectedDate="{Binding Operacion.FechaEmision}" DisplayDateStart="1900-01-01" />
+                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal"  Margin="0,20,0,0">
+                        <Button  Style="{DynamicResource MaterialDesignFlatButton}" Command="{Binding CargarCommando}" Margin="0,0,15,0" Width="86" Content="Aceptar"/>
+                        <Button Margin="15,0,0,0" Content="Cancelar" Command="{Binding CancelarCommando}"
+                        Style="{DynamicResource MaterialDesignFlatButton}"/>
+                    </StackPanel>
+                </StackPanel>
+            </md:DialogHost.DialogContent>
+        </md:DialogHost>
+    </Grid>
+</UserControl>

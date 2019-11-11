@@ -1,0 +1,49 @@
+﻿<UserControl x:Class="GestionObraWPF.Views.ViewControls.Proveedor.Proveedor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:prism="http://prismlibrary.com/"             
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:compra="clr-namespace:GestionObraWPF.Views.ViewControls.Compra"
+             xmlns:abm="clr-namespace:GestionObraWPF.Views.ViewControls.ABMs"
+             prism:ViewModelLocator.AutoWireViewModel="True">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <compra:CompraInsumos x:Key="compraMaterial"/>
+            <abm:ProveedorABM x:Key="proveedor"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <md:Transitioner Grid.ColumnSpan="2" Name="Transitioner" Grid.Column="0" SelectedIndex="0" DefaultTransitionOrigin="1,1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="100"/>
+                </Grid.ColumnDefinitions>
+                <ContentControl Content="{StaticResource proveedor}"/>
+                <Button Grid.Column="1" Command="{x:Static md:Transitioner.MoveNextCommand}" Style="{StaticResource MaterialDesignIconForegroundButton}">
+                    <md:PackIcon Kind="ArrowRightCircle"/>
+                </Button>
+            </Grid>
+            <md:TransitionerSlide TransitionOrigin="0.25, 0.25">
+                <md:TransitionerSlide.BackwardWipe>
+                    <md:SlideOutWipe/>
+                </md:TransitionerSlide.BackwardWipe>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0"  Command="{x:Static md:Transitioner.MovePreviousCommand}" Style="{StaticResource MaterialDesignIconForegroundButton}">
+                        <md:PackIcon Kind="ArrowLeftCircle"/>
+                    </Button>
+                    <ContentControl Grid.Column="1" Content="{StaticResource compraMaterial}"/>
+                </Grid>
+            </md:TransitionerSlide>
+            <md:TransitionerSlide TransitionOrigin="0.25, 0.25">
+                <md:TransitionerSlide.BackwardWipe>
+                    <md:CircleWipe/>
+                </md:TransitionerSlide.BackwardWipe>
+            </md:TransitionerSlide>
+        </md:Transitioner>
+    </Grid>
+</UserControl>

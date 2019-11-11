@@ -1,0 +1,65 @@
+﻿<Window x:Class="GestionObraWPF.Views.Login"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        xmlns:prism="http://prismlibrary.com/"
+        prism:ViewModelLocator.AutoWireViewModel="True"
+        xmlns:ff="clr-namespace:GestionObraWPF.Servicios"
+        Title="{Binding Title}" Cursor="{Binding Cursor}" MaxHeight="450" MaxWidth="480" x:Name="frmLogin" Height="450" Width="480" AllowsTransparency="True" WindowStartupLocation="CenterScreen" WindowStyle="None">
+   
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="171"/>
+            <RowDefinition Height="136*"/>
+            <RowDefinition Height="113*"/>
+        </Grid.RowDefinitions>
+
+        <Border Background="Transparent" MouseLeftButtonDown="Border_MouseLeftButtonDown" Grid.Row="0">
+            <Grid>
+                <materialDesign:ColorZone Mode="PrimaryDark">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button x:Name="btnCerrar" Background="Transparent" materialDesign:ShadowAssist.ShadowDepth="Depth0" Click="BtnCerrar_Click">
+                            <materialDesign:PackIcon Kind="Close">
+
+                            </materialDesign:PackIcon>
+                        </Button>
+                    </StackPanel>
+                </materialDesign:ColorZone>
+            </Grid>
+        </Border>
+
+        <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"  Height="142" Width="170">
+            <Image Source="../Imagenes/GonelectLogo.png" Width="170"/>
+        </StackPanel>
+        <StackPanel Orientation="Vertical" Grid.Row="2" Grid.RowSpan="2">
+            <StackPanel Margin="0,30,0,0" Orientation="Horizontal" HorizontalAlignment="Center">
+                <materialDesign:PackIcon  Margin="0,0,8,0" Kind="Account" VerticalAlignment="Center"
+                                         Foreground="{Binding ElementName=txtUsuario,Path = BorderBrush}"/>
+                <TextBox Style="{DynamicResource MaterialDesignFloatingHintTextBox}" Text="{Binding Usuario}" Width="300" x:Name="txtUsuario" materialDesign:HintAssist.Hint="Usuario"></TextBox>
+            </StackPanel>
+            <StackPanel Margin="0,20,0,0"  Orientation="Horizontal" HorizontalAlignment="Center">
+                <materialDesign:PackIcon Margin="0,0,8,0" Kind="Key" VerticalAlignment="Center"
+                                         Foreground="{Binding ElementName=PasswordBox,Path = BorderBrush}"/>
+                <PasswordBox x:Name="PasswordBox" Style="{DynamicResource MaterialDesignFloatingHintPasswordBox}" PasswordChar="*" ff:PasswordBoxAssistant.BindPassword="True" ff:PasswordBoxAssistant.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"   Width="300"  materialDesign:HintAssist.Hint="Contraseña"></PasswordBox>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Row="3" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Height="32" Width="84" >
+            <Button IsDefault="True" Content="Ingresar" Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=frmLogin}" materialDesign:ButtonAssist.CornerRadius="5"></Button>
+        </StackPanel>
+        <materialDesign:DialogHost IsOpen="{Binding Error}" x:Name="dialogError" Grid.RowSpan="4">
+            <materialDesign:DialogHost.DialogContent>
+                <StackPanel Margin="15">
+                    <TextBlock Text="Error de logueo, por favor ingrese bien sus datos." />
+                    <Button  Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" Margin="0,10,0,0" CommandParameter="{Binding ElementName=dialogError}"
+                        Style="{DynamicResource MaterialDesignFlatButton}" Content="Aceptar"/>
+                </StackPanel>
+            </materialDesign:DialogHost.DialogContent>
+        </materialDesign:DialogHost>
+    </Grid>
+
+
+</Window>

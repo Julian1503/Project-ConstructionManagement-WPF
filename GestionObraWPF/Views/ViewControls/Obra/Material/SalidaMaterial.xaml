@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="GestionObraWPF.Views.ViewControls.Obra.Material.SalidaMaterial"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:prism="http://prismlibrary.com/"             
+             xmlns:conv="clr-namespace:GestionObraWPF.Converter"
+             prism:ViewModelLocator.AutoWireViewModel="True">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <conv:ConvertDate x:Key="Date"></conv:ConvertDate>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid Background="#FFE5E5E5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <DataGrid ItemsSource="{Binding SalidaMateriales}" TextBlock.TextAlignment="Center" SelectionMode="Extended" SelectedItem="{Binding SalidaMaterial}" Grid.Row="1"
+            AutoGenerateColumns="False" CanUserResizeColumns="False" IsTextSearchEnabled="True" IsReadOnly="True" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Fecha" Binding="{Binding FechaEgreso,Converter={StaticResource Date}}"/>
+                <DataGridTextColumn Header="Responsable" Binding="{Binding Responsable.ApYNom}"/>
+                <DataGridTextColumn  Header="Material" Binding="{Binding Material.Descripcion}"/>
+                <DataGridTextColumn Header="Cantidad" Binding="{Binding Cantidad}"/>
+                <DataGridTextColumn Header="Hacia Obra" Binding="{Binding ParaObra.Descripcion}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <ToolBar Grid.Row="0">
+            <Button Margin="5" Width="Auto" Command="{Binding CrearObraCommand}" Content="Cargar salida de material"/>
+            <Button Margin="5" Width="Auto" Command="{Binding EditarObraCommand}" Content="Editar salida de material"/>
+            <Button Margin="5" Width="Auto" Command="{Binding EliminarObraCommand}" Content="Eliminar salida de material"/>
+        </ToolBar>     
+    </Grid>
+</UserControl>

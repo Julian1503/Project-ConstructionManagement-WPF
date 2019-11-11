@@ -1,0 +1,144 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:a="clr-namespace:Prism.Navigation.Xaml;assembly=Prism.Forms"
+             xmlns:local="clr-namespace:GestionObraWPF.Views.ViewControls"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:w="clr-namespace:GestionObraWPF.DTOs" 
+              xmlns:prism="http://prismlibrary.com/"
+             xmlns:ViewModels="clr-namespace:GestionObraWPF.ViewModels" x:Class="GestionObraWPF.Views.ViewControls.ObraABM"
+             mc:Ignorable="d"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             d:DesignHeight="450" d:DesignWidth="800" Background="White">
+    <UserControl.InputBindings>
+        <KeyBinding Key="Return" Command="{Binding Buscar}" CommandTarget="{Binding ElementName=txt}" />
+    </UserControl.InputBindings>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="120"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="100"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0"/>
+        <DataGrid TextBlock.TextAlignment="Center"  AutoGenerateColumns="False" CanUserResizeColumns="False" Grid.Row="1" SelectedItem="{Binding Obra}" Grid.Column="1" IsReadOnly="True" ItemsSource="{Binding Obras}" SelectionMode="Extended" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Codigo" Binding="{Binding Codigo}"/>
+                <DataGridTextColumn Header="Nombre Obra" Binding="{Binding Descripcion}"/>
+                <DataGridTextColumn Header="Encargado" Binding="{Binding Encargado.ApYNom}"/>
+                <DataGridTextColumn Header="Propietario" Binding="{Binding Propietario.RazonSocial}"/>
+                <DataGridTextColumn x:Name="dataGridTextColumn" Header="Zona" Binding="{Binding Zona.Descripcion}"/>
+                <DataGridTextColumn CellStyle="{StaticResource CeldaGrande}" MaxWidth="245" Header="Observacion" Binding="{Binding Observacion}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <!--<ScrollViewer Grid.Row="1" Grid.Column="1">
+            <StackPanel>
+                <ItemsControl x:Name="ItemControl" ItemsSource="{Binding Obras}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Margin="4,4,4,4" Width="200" CornerRadius="4" Height="300" Focusable="True" BorderThickness="1" Padding="0" BorderBrush="#096192">
+                                <Border.BitmapEffect>
+                                    <DropShadowBitmapEffect Color="Black" Direction="315" ShadowDepth="5" Softness="0.25" Opacity="0.5"/>
+                                </Border.BitmapEffect>
+                                <StackPanel Background="#1171ba">
+                                    <Border CornerRadius="5,5,0,0" Height="150"  >
+                                        <Border.Background>
+                                            <ImageBrush ImageSource="{Binding Path}"/>
+                                        </Border.Background>
+                                    </Border>
+                                    <StackPanel Margin="4,4,4,4">
+                                        <TextBlock MaxWidth="200" FontFamily="Poppins" Foreground="White" FontWeight="Bold"  FontSize="18" TextWrapping="Wrap" Text="{Binding Descripcion}" />
+                                        <TextBlock MaxWidth="200" FontFamily="Poppins" Foreground="White" FontSize="13" TextWrapping="Wrap"  Text="{Binding Codigo}" />
+                                        <TextBlock MaxWidth="200" FontFamily="Poppins" Foreground="White" FontSize="13" TextWrapping="Wrap" Text="{Binding ZonaDescripcion}" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel  Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>-->
+        <StackPanel Margin="0" Grid.Column="1"  HorizontalAlignment="Center">
+            <StackPanel Orientation="Horizontal">
+            <Button Content="Agregar obra" Height="32" Width="150" Command="{Binding CrearObraCommand}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15,26,0,22"/>
+            <Button Content="Editar obra" Height="32" Width="150" Command="{Binding EditarObraCommand}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15,26,0,22"/>
+            <Button Content="Eliminar obra" Height="32" Width="150" Command="{Binding EliminarObraCommand}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15,26,0,22"/>
+        </StackPanel>
+                <TextBox Background="White" x:Name="txt" Height="30" VerticalAlignment="Bottom" md:HintAssist.Hint="Escribe para buscar!" Text="{Binding Busqueda, UpdateSourceTrigger=PropertyChanged}" Width="300"/>
+            </StackPanel>
+        <md:DialogHost IsOpen="{Binding MostrarCrearObra}" x:Name="dialogError" Grid.ColumnSpan="3" Grid.RowSpan="2">
+            <md:DialogHost.DialogContent>
+                <Grid Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <!--<StackPanel Grid.Column="0">
+                        <TextBlock Text="Codigo: "/>
+                    </StackPanel>-->
+                    <StackPanel Grid.Column="1" Margin="20">
+                        <TextBox Style="{DynamicResource MaterialDesignFloatingHintTextBox}" Text="{Binding Obra.Codigo}" IsEnabled="{Binding ControlesDialog}" Width="300" md:HintAssist.Hint="Codigo"/>
+                        <TextBox Style="{DynamicResource MaterialDesignFloatingHintTextBox}" Text="{Binding Obra.Descripcion}"  IsEnabled="{Binding ControlesDialog}" Width="300" md:HintAssist.Hint="Descripcion"/>
+                        <ComboBox IsEditable="True"  md:HintAssist.Hint="Encargado"  SelectedItem="{Binding Obra.Encargado}"  IsEnabled="{Binding ControlesDialog}"   Style="{DynamicResource MaterialDesignFloatingHintComboBox}" DisplayMemberPath="ApYNom" ItemsSource="{Binding Encargados}" />
+                        <ComboBox x:Name="cmbPropietario" TextSearch.TextPath="RazonSocial" md:HintAssist.Hint="Propietario"  SelectedItem="{Binding Obra.Propietario}" IsEnabled="{Binding ControlesDialog}" Style="{DynamicResource MaterialDesignFloatingHintComboBox}" ItemsSource="{Binding Propietarios}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{Binding Path}" Width="50"/>
+                                        <TextBlock Text="{Binding RazonSocial}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <ComboBox IsEditable="True" md:HintAssist.Hint="Zona" x:Name="MyComboBox" SelectedItem="{Binding Obra.Zona}"  IsEnabled="{Binding ControlesDialog}"  Style="{DynamicResource MaterialDesignFloatingHintComboBox}"   DisplayMemberPath="Descripcion" ItemsSource="{Binding Zonas}"/>
+                        <TextBox  Width="300" md:HintAssist.Hint="Observacion"  AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" TextWrapping="Wrap" Text="{Binding Obra.Observacion}" IsEnabled="{Binding ControlesDialog}"/>
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal"  Margin="0,20,0,0">
+                            <Button  Style="{DynamicResource MaterialDesignFlatButton}" Command="{Binding CrearCommand}" Margin="0,0,15,0" Width="86" Content="{Binding btnDialogText}"/>
+                            <Button Margin="15,0,0,0" Content="Cancelar" Command="{Binding CancelarCommand}"
+                        Style="{DynamicResource MaterialDesignFlatButton}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </md:DialogHost.DialogContent>
+        </md:DialogHost>
+        <!--<md:DialogHost IsOpen="{Binding MostrarEncargados}" Grid.ColumnSpan="2" Grid.RowSpan="2">
+            <md:DialogHost.DialogContent>
+                <Grid Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80*"/>
+
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Codigo: "/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Margin="20">
+                        <DataGrid SelectedItem="{Binding Encargado}" ItemsSource="{Binding Encargados}" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Extended" IsSynchronizedWithCurrentItem="True" >
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Nombre completo" Binding="{Binding ApYNom}"/>
+                                <DataGridTextColumn Header="DNI" Binding="{Binding Dni}"/>
+                                <DataGridTextColumn Header="Email" Binding="{Binding Email}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal"  Margin="0,20,0,0">
+                            <Button Command="{Binding TextBoxCommand}" Style="{DynamicResource MaterialDesignFlatButton}" Margin="0,0,15,0" Width="106" Content="Seleccionar"/>
+                            <Button Margin="15,0,0,0" Content="Cancelar" Command="{x:Static md:DialogHost.CloseDialogCommand}" Width="106" CommandParameter="{Binding ElementName=dialogError}"
+                        Style="{DynamicResource MaterialDesignFlatButton}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </md:DialogHost.DialogContent>
+        </md:DialogHost>-->
+    </Grid>
+</UserControl>

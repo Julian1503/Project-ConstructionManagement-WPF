@@ -1,0 +1,98 @@
+﻿<UserControl x:Class="GestionObraWPF.Views.ViewControls.ABMs.Usuario"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:prism="http://prismlibrary.com/"             
+        xmlns:ff="clr-namespace:GestionObraWPF.Servicios"
+             xmlns:conv="clr-namespace:GestionObraWPF.Converter"
+             prism:ViewModelLocator.AutoWireViewModel="True"  Background="White">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <conv:BoolConverterToYesNo x:Key="bool"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <UserControl.InputBindings>
+        <KeyBinding Key="Return" Command="{Binding Buscar}" CommandTarget="{Binding ElementName=txt}" />
+    </UserControl.InputBindings>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="120"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0"/>
+        <DataGrid TextBlock.TextAlignment="Center"  AutoGenerateColumns="False" CanUserResizeColumns="False" Grid.Row="1" IsTextSearchEnabled="True" SelectedItem="{Binding Usuario}" Grid.Column="1" IsReadOnly="True" ItemsSource="{Binding Usuarios}" SelectionMode="Extended" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+            <DataGrid.Columns>
+              <DataGridTextColumn Header="Nombre" Binding="{Binding UserName}"/>
+                <DataGridTextColumn Header="Persona" Binding="{Binding Empleado.ApYNom}"/>
+                <DataGridTextColumn Header="Tesoreria" Binding="{Binding Identificacion.Tesoreria,Converter={StaticResource bool}}"/>
+                <DataGridTextColumn Header="Administracion" Binding="{Binding Identificacion.Administracion,Converter={StaticResource bool}}"/>
+                <DataGridTextColumn Header="Obra" Binding="{Binding Identificacion.Obra,Converter={StaticResource bool}}"/>
+                <DataGridTextColumn Header="Configuracion" Binding="{Binding Identificacion.Configuracion,Converter={StaticResource bool}}"/>
+                <DataGridTextColumn Header="Usuario" Binding="{Binding Identificacion.Usuarios,Converter={StaticResource bool}}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <StackPanel Margin="0" Grid.Column="1"  HorizontalAlignment="Center">
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Agregar usuario" Height="32" Width="150" Command="{Binding CrearObraCommand}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15,26,0,22"/>
+                <Button Content="Eliminar usuario" Height="32" Width="150" Command="{Binding EliminarObraCommand}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15,26,0,22"/>
+            </StackPanel>
+
+            <TextBox Background="White" x:Name="txt" Height="30" VerticalAlignment="Bottom" md:HintAssist.Hint="Escribe para buscar!" Text="{Binding Busqueda, UpdateSourceTrigger=PropertyChanged}" Width="300"/>
+        </StackPanel>
+
+        <md:DialogHost IsOpen="{Binding MostrarCrearObra}" x:Name="dialogError" Grid.ColumnSpan="2" Grid.RowSpan="2">
+            <md:DialogHost.DialogContent>
+                <Grid Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="1" Margin="20">
+                        <TextBox Style="{DynamicResource MaterialDesignFloatingHintTextBox}" Text="{Binding Usuario.UserName}"  IsEnabled="{Binding ControlesDialog}" Width="300" md:HintAssist.Hint="Usuario"/>
+                        <PasswordBox x:Name="PasswordBox" Style="{DynamicResource MaterialDesignFloatingHintPasswordBox}" PasswordChar="*" ff:PasswordBoxAssistant.BindPassword="True" ff:PasswordBoxAssistant.BoundPassword="{Binding Path=Usuario.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"   Width="300"  md:HintAssist.Hint="Contraseña"/>
+                        <ComboBox VerticalAlignment="Center" SelectedItem="{Binding Usuario.Empleado}" Margin="0,0,30,12" md:HintAssist.Hint="Empleado" IsEnabled="{Binding ControlesDialog}"   Style="{DynamicResource MaterialDesignFloatingHintComboBox}"  ItemsSource="{Binding Empleados}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{Binding Path}" Width="50"/>
+                                        <TextBlock Text="{Binding ApYNom}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <TextBlock Text="Permisos:"/>
+                        <StackPanel Orientation="Horizontal" IsEnabled="{Binding ControlesDialog}">
+                            <TextBlock Text="Administracion: "/>
+                            <ToggleButton ToolTip="Administracion" IsChecked="{Binding Identificacion.Administracion}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" IsEnabled="{Binding ControlesDialog}">
+                            <TextBlock Text="Obra: "/>
+                            <ToggleButton ToolTip="Obra" IsChecked="{Binding Identificacion.Obra}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" IsEnabled="{Binding ControlesDialog}">
+                            <TextBlock Text="Tesoreria: "/>
+                            <ToggleButton ToolTip="Tesoreria" IsChecked="{Binding Identificacion.Tesoreria}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" IsEnabled="{Binding ControlesDialog}">
+                            <TextBlock Text="Configuracion: "/>
+                            <ToggleButton ToolTip="Configuracion" IsChecked="{Binding Identificacion.Configuracion}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" IsEnabled="{Binding ControlesDialog}">
+                            <TextBlock Text="Usuario: "/>
+                            <ToggleButton ToolTip="Usuario" IsChecked="{Binding Identificacion.Usuarios}"/>
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal"  Margin="0,20,0,0">
+                            <Button  Style="{DynamicResource MaterialDesignFlatButton}" Command="{Binding CrearCommand}" Margin="0,0,15,0" Width="86" Content="{Binding btnDialogText}"/>
+                            <Button Margin="15,0,0,0" Content="Cancelar" Command="{Binding CancelarCommand}"
+                        Style="{DynamicResource MaterialDesignFlatButton}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </md:DialogHost.DialogContent>
+        </md:DialogHost>
+    </Grid>
+</UserControl>

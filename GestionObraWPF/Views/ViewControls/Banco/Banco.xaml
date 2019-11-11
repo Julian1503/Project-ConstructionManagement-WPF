@@ -1,0 +1,64 @@
+﻿<UserControl x:Class="GestionObraWPF.Views.ViewControls.Banco.Banco"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:banco="clr-namespace:GestionObraWPF.Views.ViewControls.ABMs"
+             xmlns:as="clr-namespace:GestionObraWPF.Views.ViewControls.Banco"
+             xmlns:prism="http://prismlibrary.com/"             
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             prism:ViewModelLocator.AutoWireViewModel="True">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <banco:BancoABM x:Key="bancoabm"/>
+            <as:BancoMenu x:Key="bancomenu"/>
+            <as:CuentaCorriente x:Key="cta"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <md:Transitioner Grid.ColumnSpan="2" Name="Transitioner" Grid.Column="0" SelectedIndex="0" DefaultTransitionOrigin="1,1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="100"/>
+                </Grid.ColumnDefinitions>
+                <ContentControl Content="{StaticResource bancoabm}"/>
+                <Button Grid.Column="1" Command="{x:Static md:Transitioner.MoveNextCommand}" Style="{StaticResource MaterialDesignIconForegroundButton}">
+                    <md:PackIcon Kind="ArrowRightCircle"/>
+                </Button>
+            </Grid>
+            <md:TransitionerSlide TransitionOrigin="0.25, 0.25">
+                <md:TransitionerSlide.BackwardWipe>
+                    <md:SlideOutWipe/>
+                </md:TransitionerSlide.BackwardWipe>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="100"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0"  Command="{x:Static md:Transitioner.MovePreviousCommand}" Style="{StaticResource MaterialDesignIconForegroundButton}">
+                        <md:PackIcon Kind="ArrowLeftCircle"/>
+                    </Button>
+                    <ContentControl Grid.Column="1" Content="{StaticResource bancomenu}"/>
+                    <Button  Grid.Column="2" Command="{x:Static md:Transitioner.MoveNextCommand}" Style="{StaticResource MaterialDesignIconForegroundButton}">
+                        <md:PackIcon Kind="ArrowRightCircle"/>
+                    </Button>
+                </Grid>
+            </md:TransitionerSlide>
+            <md:TransitionerSlide TransitionOrigin="0.25, 0.25">
+                <md:TransitionerSlide.BackwardWipe>
+                    <md:CircleWipe/>
+                </md:TransitionerSlide.BackwardWipe>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0"  Command="{x:Static md:Transitioner.MovePreviousCommand}" Style="{StaticResource MaterialDesignIconForegroundButton}">
+                        <md:PackIcon Kind="ArrowLeftCircle"/>
+                    </Button>
+                    <ContentControl Grid.Column="1" Content="{StaticResource cta}"/>
+                </Grid>
+            </md:TransitionerSlide>
+        </md:Transitioner>
+    </Grid>
+</UserControl>

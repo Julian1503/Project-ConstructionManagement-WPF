@@ -1,0 +1,74 @@
+﻿<UserControl x:Class="GestionObraWPF.Views.ViewControls.Banco.CuentaCorrienteEntrada"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:prism="http://prismlibrary.com/" 
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             prism:ViewModelLocator.AutoWireViewModel="True" Background="White">
+    <Grid >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <md:Transitioner Grid.ColumnSpan="2" Name="Transitioner" Grid.Column="0" SelectedIndex="0" DefaultTransitionOrigin="1, 1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="44"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="65*" />
+                    <ColumnDefinition Width="169*" />
+                    <ColumnDefinition Width="163*"  />
+                    <ColumnDefinition Width="44*" />
+                </Grid.ColumnDefinitions>
+                <Button Command="{Binding CerrarCommand}" Style="{StaticResource MaterialDesignFloatingActionLightButton}" Height="Auto" Margin="9" Width="Auto" Grid.Column="3">
+                    <md:PackIcon Kind="Close" Height="24" Width="24" />
+                </Button>
+                <Button  Margin="12,2,40,30" Height="Auto" Click="Button_Click" Grid.Row="1" Grid.Column="1">
+                    <StackPanel>
+                        <md:PackIcon Kind="CallMissed" Height="50" Width="50" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Deposito"/>
+                    </StackPanel>
+                </Button>
+                <Button Grid.Column="2" Height="Auto" Margin="30,2,17,30" Click="Button_Click_1" Grid.Row="1">
+                    <StackPanel >
+                        <md:PackIcon Kind="BankTransfer" Height="50" Width="50" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Transferencia"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
+            <md:TransitionerSlide TransitionOrigin="0.25, 0.25">
+                <md:TransitionerSlide.BackwardWipe>
+                    <md:SlideOutWipe/>
+                </md:TransitionerSlide.BackwardWipe>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+
+                        <ColumnDefinition Width="47"/>
+                        <ColumnDefinition/>
+
+                    </Grid.ColumnDefinitions>
+                    <Button Click="Button_Click_2" Style="{StaticResource MaterialDesignFloatingActionLightButton}" VerticalAlignment="Top" Height="35" Margin="9,10,0,0" Width="Auto" Grid.Column="0">
+                        <md:PackIcon Kind="ArrowBack"  Height="24" Width="24" />
+                    </Button>
+                   
+                </Grid>
+            </md:TransitionerSlide>
+            <md:TransitionerSlide TransitionOrigin="0.25, 0.25">
+                <md:TransitionerSlide.BackwardWipe>
+                    <md:CircleWipe/>
+                </md:TransitionerSlide.BackwardWipe>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="47"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Button Click="Button_Click_2" Style="{StaticResource MaterialDesignFloatingActionLightButton}" VerticalAlignment="Top" Height="35" Margin="9,10,0,0" Width="Auto" Grid.Column="0">
+                        <md:PackIcon Kind="ArrowBack"  Height="24" Width="24" />
+                    </Button>
+                   
+                </Grid>
+            </md:TransitionerSlide>
+        </md:Transitioner>
+    </Grid>
+</UserControl>

@@ -1,0 +1,222 @@
+﻿<UserControl x:Class="GestionObraWPF.Views.ViewControls.Venta.VentasAdministracion"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+   xmlns:prism="http://prismlibrary.com/" 
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:comp="clr-namespace:GestionObraWPF.Views.ViewControls.Caja"
+             prism:ViewModelLocator.AutoWireViewModel="True" x:Name="ventana" Background="White">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <comp:ComprobanteEntrada x:Key="compro"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <UserControl.InputBindings>
+        <KeyBinding Key="Esc" Command="{Binding SacarPantalla}" CommandTarget="{Binding ElementName=dialogError}"/>
+    </UserControl.InputBindings>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="11*"/>
+        </Grid.RowDefinitions>
+        <TextBlock TextAlignment="Center" Grid.Row="1" Text="No se encontro ningun presupuesto" VerticalAlignment="Top" Visibility="{Binding SinPresupuesto}" FontFamily="Poppins" Foreground="Gray" Margin="0,20,0,0" Grid.RowSpan="2"/>
+        <ListView md:ListViewAssist.ListViewItemPadding="10" x:Name="lista" Margin="0,2,0,0" ItemsSource="{Binding Presupuestos}" Grid.Row="1">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <i:InvokeCommandAction 
+                        Command="{Binding Command}"
+                        CommandParameter="{Binding ElementName=lista, Path=SelectedItem}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <ListView.ItemTemplate>
+                <DataTemplate >
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="90"/>
+                            <ColumnDefinition Width="400"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel VerticalAlignment="Center" ContextMenuService.HasDropShadow="True"  DockPanel.Dock="Left">
+                            <TextBlock FontWeight="DemiBold" FontFamily="Poppins" TextAlignment="Center" Text="Numero"/>
+                            <TextBlock TextAlignment="Center" FontFamily="Poppins" Text="{Binding Numero}"/>
+                        </StackPanel>
+                        <TextBlock  Grid.Column="1" ContextMenuService.HasDropShadow="True"  Margin="50,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Titulo}"/>
+
+                        <StackPanel Margin="20,0" Grid.Column="2">
+                            <TextBlock HorizontalAlignment="Left" TextAlignment="Center" FontWeight="DemiBold" FontFamily="Poppins" Text="Cliente: "/>
+                            <TextBlock HorizontalAlignment="Left" TextAlignment="Center" FontFamily="Poppins" Text="{Binding Empresa.RazonSocial,StringFormat=Empresa: {0} }"/>
+                            <TextBlock HorizontalAlignment="Left" TextAlignment="Center" FontFamily="Poppins" Text="{Binding Empresa.Cuit,StringFormat=Cuit: {0} }"/>
+                            <TextBlock HorizontalAlignment="Left" TextAlignment="Center" FontFamily="Poppins" Text="{Binding Empresa.Telefono,StringFormat=Telefono: {0} }"/>
+                        </StackPanel>
+                        <StackPanel Margin="20,0" Grid.Column="3">
+                            <TextBlock HorizontalAlignment="Left" TextAlignment="Center" FontWeight="DemiBold" FontFamily="Poppins" Text="Obra: "/>
+                            <TextBlock HorizontalAlignment="Left" TextAlignment="Center" FontFamily="Poppins" Text="{Binding Obra.Codigo,StringFormat=Codigo: {0} }"/>
+                            <TextBlock HorizontalAlignment="Left" TextAlignment="Center" FontFamily="Poppins" Text="{Binding Obra.Descripcion,StringFormat=Descripcion: {0} }"/>
+                            <TextBlock HorizontalAlignment="Left" TextAlignment="Center" FontFamily="Poppins" Text="{Binding Obra.Encargado.ApYNom,StringFormat=Encargado: {0} }"/>
+                        </StackPanel> 
+                        <TextBlock  VerticalAlignment="Center" TextWrapping="Wrap" Grid.Column="4" Margin="20,0,0,0" HorizontalAlignment="Center" >
+                            <TextBlock.Style>
+                                <Style>
+                                    <Style.Triggers>
+
+                                        <DataTrigger Binding="{Binding Facturado}" Value="False" >
+                                            <Setter Property="TextBlock.Text" Value="Sin Facturar" />
+                                            <Setter Property="TextBlock.Foreground" Value="#F8D760" />
+                                            <Setter Property="TextBlock.FontWeight" Value="DemiBold" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Facturado}" Value="True" >
+                                            <Setter Property="TextBlock.Text" Value="Facturado" />
+                                            <Setter Property="TextBlock.Foreground" Value="#AEE1A8" />
+                                            <Setter Property="TextBlock.FontWeight" Value="DemiBold" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <md:DialogHost IsOpen="{Binding MostrarOpc}"  Grid.RowSpan="2">
+            <md:DialogHost.DialogContent>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Button HorizontalAlignment="Right" Margin="5" Width="40" Height="40" Style="{StaticResource MaterialDesignFloatingActionLightButton}"  Command="{Binding Cerrar}">
+                        <md:PackIcon Kind="Close"/>
+                    </Button>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="5" >
+                        <Button Width="150" Height="100" IsEnabled="{Binding Negro}" Margin="20,5" Command="{Binding PagoSinComprobante}">
+                            <TextBlock TextWrapping="Wrap" Text="Facturacion sin registro"/>
+                        </Button>
+                        <Button Width="150" Height="100"  IsEnabled="{Binding Blanco}" Margin="20,5"  Command="{Binding PagoConComprobante}">
+                            <TextBlock TextWrapping="Wrap" Text="Facturacion con registro"/>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </md:DialogHost.DialogContent>
+        </md:DialogHost>
+        <md:DialogHost IsOpen="{Binding MostarNegro }" Grid.RowSpan="2">
+            <md:DialogHost.DialogContent>
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel Margin="5">
+                            <StackPanel  Margin="5">
+                                <StackPanel Orientation="Horizontal">
+                                    <Label VerticalAlignment="Center" FontFamily="Poppins" FontSize="14" Content="Suma de gastos directos: "/>
+                                    <TextBlock FontSize="12" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding DineroTotalGastos,StringFormat='{}{0:c}'}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label VerticalAlignment="Center" FontFamily="Poppins" FontSize="14" Content="Gtos grales indirectos: "/>
+                                    <TextBlock FontSize="12" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding DineroImprevistoPorcentual,StringFormat='{}{0:c}'}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label VerticalAlignment="Center" FontFamily="Poppins" FontSize="14" Content="Suma de gastos totales: "/>
+                                    <TextBlock FontSize="12" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding SumaGastos,StringFormat='{}{0:c}'}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label VerticalAlignment="Center" FontFamily="Poppins" FontSize="14" Content="Beneficios: "/>
+                                    <TextBlock FontSize="12" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding DineroBeneficio,StringFormat='{}{0:c}'}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label VerticalAlignment="Center" FontFamily="Poppins" FontSize="14" Content="Subtotal : "/>
+                                    <TextBlock FontSize="12" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding Subtotal,StringFormat='{}{0:c}'}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label VerticalAlignment="Center" FontFamily="Poppins" FontSize="14" Content="Impuestos directos: "/>
+                                    <TextBlock FontSize="12" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding DineroImpuesto,StringFormat='{}{0:c}'}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label VerticalAlignment="Center" FontFamily="Poppins" FontSize="14" Content="Total de obra : "/>
+                                    <TextBlock FontSize="12" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding TotalObra,StringFormat='{}{0:c}'}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label VerticalAlignment="Center" FontFamily="Poppins" FontSize="14" Content="Precio cliente : "/>
+                                    <TextBlock FontSize="12" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding Presupuesto.PrecioCliente,StringFormat='{}{0:c}'}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Margin="5">
+                            <DatePicker md:HintAssist.Hint="Fecha" DisplayDateStart="01-01-2000" SelectedDateFormat="Short" SelectedDate="{Binding Fecha}" Margin="0,5,0,3"/>
+                            <TextBox Width="260" PreviewTextInput="NumberValidationTextBox"  md:HintAssist.Hint="Descuento" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" Margin="0,5,0,3" FontFamily="Poppins" FontSize="14" Text="{Binding Descuento, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBox Width="260" PreviewTextInput="NumberValidationTextBox"  md:HintAssist.Hint="Recargos" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" Margin="0,5,0,3" FontFamily="Poppins" FontSize="14" Text="{Binding Recargos, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBlock  HorizontalAlignment="Left" FontSize="16" FontFamily="Poppins" FontWeight="DemiBold" Text="{Binding Total,StringFormat=Total: {0:C}}"/>
+                            <TextBlock  HorizontalAlignment="Left" FontSize="16" FontFamily="Poppins" FontWeight="DemiBold" Text="{Binding Presupuesto.Cobrado,StringFormat=Facturado: {0:C}}"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal"  Margin="0,20,0,20">
+                        <Button  Style="{DynamicResource MaterialDesignFlatButton}" Command="{Binding CrearCommand}" Margin="0,0,15,0" Width="86" Content="Facturar"/>
+                        <Button Margin="15,0,0,0" Content="Cancelar" Command="{Binding CancelarNegroCommand}"
+                        Style="{DynamicResource MaterialDesignFlatButton}"/>
+                    </StackPanel>
+                </StackPanel>
+            </md:DialogHost.DialogContent>
+        </md:DialogHost>
+        <md:DialogHost IsOpen="{Binding MostrarBlanco }" Grid.RowSpan="2">
+            <md:DialogHost.DialogContent>
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel Margin="5">
+                            <StackPanel  Margin="5">
+                                <StackPanel Orientation="Horizontal">
+                                    <Label VerticalAlignment="Center" FontFamily="Poppins" FontSize="14" Content="Suma de gastos directos: "/>
+                                    <TextBlock FontSize="12" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding DineroTotalGastos,StringFormat='{}{0:c}'}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label VerticalAlignment="Center" FontFamily="Poppins" FontSize="14" Content="Gtos grales indirectos: "/>
+                                    <TextBlock FontSize="12" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding DineroImprevistoPorcentual,StringFormat='{}{0:c}'}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label VerticalAlignment="Center" FontFamily="Poppins" FontSize="14" Content="Suma de gastos totales: "/>
+                                    <TextBlock FontSize="12" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding SumaGastos,StringFormat='{}{0:c}'}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label VerticalAlignment="Center" FontFamily="Poppins" FontSize="14" Content="Beneficios: "/>
+                                    <TextBlock FontSize="12" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding DineroBeneficio,StringFormat='{}{0:c}'}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label VerticalAlignment="Center" FontFamily="Poppins" FontSize="14" Content="Subtotal : "/>
+                                    <TextBlock FontSize="12" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding Subtotal,StringFormat='{}{0:c}'}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label VerticalAlignment="Center" FontFamily="Poppins" FontSize="14" Content="Impuestos directos: "/>
+                                    <TextBlock FontSize="12" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding DineroImpuesto,StringFormat='{}{0:c}'}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label VerticalAlignment="Center" FontFamily="Poppins" FontSize="14" Content="Total de obra : "/>
+                                    <TextBlock FontSize="12" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding TotalObra,StringFormat='{}{0:c}'}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label VerticalAlignment="Center" FontFamily="Poppins" FontSize="14" Content="Precio cliente : "/>
+                                    <TextBlock FontSize="12" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding Presupuesto.PrecioCliente,StringFormat='{}{0:c}'}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Margin="5">
+                            <DatePicker md:HintAssist.Hint="Fecha" DisplayDateStart="01-01-2000" SelectedDateFormat="Short" SelectedDate="{Binding Fecha}" Margin="0,5,0,3"/>
+                            <TextBox Width="260" PreviewTextInput="NumberValidationTextBox"  md:HintAssist.Hint="N° Comprobante"  Style="{DynamicResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" Margin="0,5,0,3" FontFamily="Poppins" FontSize="14" Text="{Binding NumeroComprobante, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBox Width="260" PreviewTextInput="NumberValidationTextBox"  md:HintAssist.Hint="Cae"  Style="{DynamicResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" Margin="0,5,0,3" FontFamily="Poppins" FontSize="14" Text="{Binding Cae, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBox Width="260" PreviewTextInput="NumberValidationTextBox"  md:HintAssist.Hint="Descuento"  Style="{DynamicResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" Margin="0,5,0,3" FontFamily="Poppins" FontSize="14" Text="{Binding Descuento, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBox Width="260" PreviewTextInput="NumberValidationTextBox"  md:HintAssist.Hint="Recargos" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" Margin="0,5,0,3" FontFamily="Poppins" FontSize="14" Text="{Binding Recargos, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBox Width="260" PreviewTextInput="NumberValidationTextBox"  md:HintAssist.Hint="Retenciones" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" Margin="0,5,0,3" FontFamily="Poppins" FontSize="14" Text="{Binding Retencion,  UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBox Width="260" PreviewTextInput="NumberValidationTextBox"   md:HintAssist.Hint="IVA" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" Margin="0,5,0,3" FontFamily="Poppins" FontSize="14" Text="{Binding IVA,  UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBox Width="260" PreviewTextInput="NumberValidationTextBox"  md:HintAssist.Hint="Percepciones" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" Margin="0,5,0,3" FontFamily="Poppins" FontSize="14" Text="{Binding Percepcion,  UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBlock  HorizontalAlignment="Left" FontSize="16" FontFamily="Poppins" FontWeight="DemiBold" Text="{Binding Total,StringFormat=Total: {0:C}}"/>
+                            <TextBlock  HorizontalAlignment="Left" FontSize="16" FontFamily="Poppins" FontWeight="DemiBold" Text="{Binding Presupuesto.Cobrado,StringFormat=Facturado: {0:C}}"/>
+                            <!--<TextBox PreviewTextInput="NumberValidationTextBox"  Width="260"  md:HintAssist.Hint="Facturar" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" Margin="0,5,0,3" FontFamily="Poppins" FontSize="14" Text="{Binding Cobrar,  UpdateSourceTrigger=PropertyChanged}" />-->
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal"  Margin="0,20,0,20">
+                        <Button  Style="{DynamicResource MaterialDesignFlatButton}" Command="{Binding CrearCommand}" Margin="0,0,15,0" Width="86" Content="Facturar"/>
+                        <Button Margin="15,0,0,0" Content="Cancelar" Command="{Binding CancelarBlancoCommand }"
+                        Style="{DynamicResource MaterialDesignFlatButton}"/>
+                    </StackPanel>
+                </StackPanel>
+            </md:DialogHost.DialogContent>
+        </md:DialogHost>
+    </Grid>
+</UserControl>

@@ -1,0 +1,935 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{DBA3CC6A-6D41-47CE-88B4-A9C72B980898}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GestionObraWPF</RootNamespace>
+    <AssemblyName>GestionObraWPF</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>GonelectLogo.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Printing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Constantes\EstadoCompra.cs" />
+    <Compile Include="Constantes\EstadoDeCobro.cs" />
+    <Compile Include="Constantes\EstadoObra.cs" />
+    <Compile Include="Constantes\EstadoPresupuesto.cs" />
+    <Compile Include="Constantes\EstadoTarea.cs" />
+    <Compile Include="Constantes\NoObras.cs" />
+    <Compile Include="Constantes\Perioricidad.cs" />
+    <Compile Include="Constantes\TipoComprobanteSalida.cs" />
+    <Compile Include="Constantes\TipoMovimiento.cs" />
+    <Compile Include="Constantes\TipoOperacion.cs" />
+    <Compile Include="Constantes\TipoPago.cs" />
+    <Compile Include="Constantes\TipoRubro.cs" />
+    <Compile Include="Constantes\UsadoEn.cs" />
+    <Compile Include="Converter\BoolConverterToYesNo.cs" />
+    <Compile Include="Converter\ConvertBooleanToVisibilityCollapsed.cs" />
+    <Compile Include="Converter\ConvertDate.cs" />
+    <Compile Include="Converter\ConverterEntradaSalida.cs" />
+    <Compile Include="Converter\ConverterTime.cs" />
+    <Compile Include="Converter\ConverterTrueToFalse.cs" />
+    <Compile Include="Converter\EnumDescriptionConverter.cs" />
+    <Compile Include="Converter\EnumToStringConverter.cs" />
+    <Compile Include="Converter\RoundMyNumberConverter.cs" />
+    <Compile Include="DTOs\AsistenciaContratista.cs" />
+    <Compile Include="DTOs\AsistenciaDiariaDto.cs" />
+    <Compile Include="DTOs\BancoDto.cs" />
+    <Compile Include="DTOs\BaseDto.cs" />
+    <Compile Include="DTOs\CajaDto.cs" />
+    <Compile Include="DTOs\CategoriaDto.cs" />
+    <Compile Include="DTOs\CausaFaltaDto.cs" />
+    <Compile Include="DTOs\ChequeEntradaDto.cs" />
+    <Compile Include="DTOs\ChequeSalidaDto.cs" />
+    <Compile Include="DTOs\ComprobanteCompraDto.cs" />
+    <Compile Include="DTOs\ComprobanteDto.cs" />
+    <Compile Include="DTOs\ComprobanteSalidaDto.cs" />
+    <Compile Include="DTOs\CondicionIvaDto.cs" />
+    <Compile Include="DTOs\ContratistaDto.cs" />
+    <Compile Include="DTOs\CuentaCorrienteDto.cs" />
+    <Compile Include="DTOs\CuentaDto.cs" />
+    <Compile Include="DTOs\DepositoDto.cs" />
+    <Compile Include="DTOs\DescripcionTareaDto.cs" />
+    <Compile Include="DTOs\DetalleCajaDto.cs" />
+    <Compile Include="DTOs\DetalleComprobanteDto.cs" />
+    <Compile Include="DTOs\EmpleadoDto.cs" />
+    <Compile Include="DTOs\EmpresaDto.cs" />
+    <Compile Include="DTOs\GastoDto.cs" />
+    <Compile Include="DTOs\Identificacion.cs" />
+    <Compile Include="DTOs\IngresoMaterialDto.cs" />
+    <Compile Include="DTOs\IvaCompraVentaDto.cs" />
+    <Compile Include="DTOs\JornalDto.cs" />
+    <Compile Include="DTOs\ObraEmpleadoDto.cs" />
+    <Compile Include="DTOs\JornalMaterialDto.cs" />
+    <Compile Include="DTOs\OperacionDto.cs" />
+    <Compile Include="DTOs\PersonaDto.cs" />
+    <Compile Include="DTOs\ObraDto.cs" />
+    <Compile Include="Constantes\TipoSexo.cs" />
+    <Compile Include="DTOs\PrecioDto.cs" />
+    <Compile Include="DTOs\PresupuestoDto.cs" />
+    <Compile Include="DTOs\ProveedorDto.cs" />
+    <Compile Include="DTOs\RubroDto.cs" />
+    <Compile Include="DTOs\SalarioMinimoDto.cs" />
+    <Compile Include="DTOs\SalidaMaterialDto.cs" />
+    <Compile Include="DTOs\StockDto.cs" />
+    <Compile Include="DTOs\SubRubroDto.cs" />
+    <Compile Include="DTOs\TareaDto.cs" />
+    <Compile Include="Constantes\TipoComprobanteEntrada.cs" />
+    <Compile Include="DTOs\TipoGastoDto.cs" />
+    <Compile Include="DTOs\TransferenciaDto.cs" />
+    <Compile Include="DTOs\ZonaDto.cs" />
+    <Compile Include="Helpers\CalcularPorcentaje.cs" />
+    <Compile Include="Helpers\Encriptar.cs" />
+    <Compile Include="Helpers\Excel.cs" />
+    <Compile Include="Helpers\Grid.cs" />
+    <Compile Include="Helpers\ObjetoNullo.cs" />
+    <Compile Include="Helpers\StockHelper.cs" />
+    <Compile Include="Model\MaterialDto.cs" />
+    <Compile Include="Model\ObraModel.cs" />
+    <Compile Include="Constantes\TipoMaterial.cs" />
+    <Compile Include="Model\Usuario.cs" />
+    <Compile Include="Modules\MainModule.cs" />
+    <Compile Include="Servicios\ApiProcessor.cs" />
+    <Compile Include="Servicios\CloudImage.cs" />
+    <Compile Include="Servicios\IsBusy.cs" />
+    <Compile Include="Servicios\PasswordBoxAssitent.cs" />
+    <Compile Include="ViewModels\ABMs\BaseABMViewModel.cs" />
+    <Compile Include="ViewModels\BancoMenuViewModel.cs" />
+    <Compile Include="ViewModels\Banco\BancoABMViewModel.cs" />
+    <Compile Include="ViewModels\Banco\BancoViewModel.cs" />
+    <Compile Include="ViewModels\ABMs\EmpresaABMViewModel.cs" />
+    <Compile Include="ViewModels\ABMs\CondicionIvaABMViewModel.cs" />
+    <Compile Include="ViewModels\ABMs\DescripcionTareaABMViewModel.cs" />
+    <Compile Include="ViewModels\CajaCerradasViewModel.cs" />
+    <Compile Include="ViewModels\CajaMenuViewModel.cs" />
+    <Compile Include="ViewModels\Caja\CajaViewModel.cs" />
+    <Compile Include="ViewModels\Caja\ChequeEntradaViewModel.cs" />
+    <Compile Include="ViewModels\Caja\ChequeViewModel.cs" />
+    <Compile Include="ViewModels\ABMs\CategoriaABMViewModel.cs" />
+    <Compile Include="ViewModels\ReporteAdministracionViewModel.cs" />
+    <Compile Include="ViewModels\ReporteChequeEntradaViewModel.cs" />
+    <Compile Include="ViewModels\ReporteChequeSalidaViewModel.cs" />
+    <Compile Include="ViewModels\CobrarChequeViewModel.cs" />
+    <Compile Include="ViewModels\Compra\CompraInsumosViewModel.cs" />
+    <Compile Include="DTOs\ComprobanteEntradaDto.cs" />
+    <Compile Include="ViewModels\Caja\ComprobanteEntradaViewModel.cs" />
+    <Compile Include="ViewModels\Caja\ComprobanteSalidaViewModel.cs" />
+    <Compile Include="ViewModels\Banco\CuentaCorrienteEntradaViewModel.cs" />
+    <Compile Include="ViewModels\ComprobanteCompraViewModel.cs" />
+    <Compile Include="ViewModels\ReporteComprobanteEntradaViewModel.cs" />
+    <Compile Include="ViewModels\ReporteComprobanteSalidaViewModel.cs" />
+    <Compile Include="ViewModels\Contratista\ContratistaABMViewModel.cs" />
+    <Compile Include="ViewModels\CuentaCorrienteViewModel.cs" />
+    <Compile Include="ViewModels\DatosPresupuestoViewModel.cs" />
+    <Compile Include="ViewModels\DepositoEntradaViewModel.cs" />
+    <Compile Include="ViewModels\Empleado\EmpleadoABMViewModel.cs" />
+    <Compile Include="ViewModels\EmpleadoObraViewModel.cs" />
+    <Compile Include="ViewModels\EventAgreggator\BoolAgreggator.cs" />
+    <Compile Include="ViewModels\EventAgreggator\BulAgreggator.cs" />
+    <Compile Include="ViewModels\EventAgreggator\IngresoMaterialAggregator.cs" />
+    <Compile Include="ViewModels\EventAgreggator\ObraAgreggator.cs" />
+    <Compile Include="ViewModels\EventAgreggator\PopUp.cs" />
+    <Compile Include="ViewModels\EventAgreggator\SalidaMaterialAgreggator.cs" />
+    <Compile Include="ViewModels\EventAgreggator\TareaAgreggator.cs" />
+    <Compile Include="ViewModels\ABMs\ObraABMViewModel.cs" />
+    <Compile Include="ViewModels\ABMs\MaterialABMViewModel.cs" />
+    <Compile Include="ViewModels\ABMs\ZonaABMViewModel.cs" />
+    <Compile Include="ViewModels\ABMs\RubroABMViewModel.cs" />
+    <Compile Include="ViewModels\ABMs\SubRubroABMViewModel.cs" />
+    <Compile Include="ViewModels\ABMs\TipoGastoABMViewModel.cs" />
+    <Compile Include="ViewModels\ABMs\PersonaABMViewModel.cs" />
+    <Compile Include="ViewModels\GanttRealViewModel.cs" />
+    <Compile Include="ViewModels\GanttViewModel.cs" />
+    <Compile Include="ViewModels\JornalDetalleViewModel.cs" />
+    <Compile Include="ViewModels\JornalViewModel.cs" />
+    <Compile Include="ViewModels\Contratista\ListadoAsistenciaContratistaViewModel.cs" />
+    <Compile Include="ViewModels\Empleado\ListaAsistenciaEmpleadoViewModel.cs" />
+    <Compile Include="ViewModels\ListadoComprobantesCompraViewModel.cs" />
+    <Compile Include="ViewModels\ObraPlanificacionDetalleViewModel.cs" />
+    <Compile Include="ViewModels\Obra\IngresoMaterialViewModel.cs" />
+    <Compile Include="ViewModels\Obra\ObraDetalleViewModel.cs" />
+    <Compile Include="ViewModels\Obra\ObraViewViewModel.cs" />
+    <Compile Include="ViewModels\Obra\TareasViewModel.cs" />
+    <Compile Include="ViewModels\Obra\SalidaMaterialViewModel.cs" />
+    <Compile Include="ViewModels\Empleado\PantallaEmpleadoViewModel.cs" />
+    <Compile Include="ViewModels\PaginaInicioViewModel.cs" />
+    <Compile Include="ViewModels\ABMs\PrecioABMViewModel.cs" />
+    <Compile Include="ViewModels\Contratista\PantallaContratistaViewModel.cs" />
+    <Compile Include="ViewModels\PresupuestosViewModel.cs" />
+    <Compile Include="ViewModels\Presupuesto\PresupuestoDetalleViewModel.cs" />
+    <Compile Include="ViewModels\Presupuesto\PresupuestoInicioViewModel.cs" />
+    <Compile Include="ViewModels\ABMs\ProveedorABMViewModel.cs" />
+    <Compile Include="ViewModels\ObraPlanificacionViewModel.cs" />
+    <Compile Include="ViewModels\ABMs\StockABMViewModel.cs" />
+    <Compile Include="ViewModels\ProveedorViewModel.cs" />
+    <Compile Include="ViewModels\ReporteCuentaViewModel.cs" />
+    <Compile Include="ViewModels\ReporteDepositoViewModel.cs" />
+    <Compile Include="ViewModels\ReporteIvaCVViewModel.cs" />
+    <Compile Include="ViewModels\ReporteMaterialesUsadosViewModel.cs" />
+    <Compile Include="ViewModels\ReporteObraViewModel.cs" />
+    <Compile Include="ViewModels\ReportePercepcionViewModel.cs" />
+    <Compile Include="ViewModels\ReporteRetencionViewModel.cs" />
+    <Compile Include="ViewModels\ReporteTesoreriaViewModel.cs" />
+    <Compile Include="ViewModels\ReporteTransferenciaViewModel.cs" />
+    <Compile Include="ViewModels\TransferenciaEntradaViewModel.cs" />
+    <Compile Include="ViewModels\TransferenciaSalidaViewModel.cs" />
+    <Compile Include="ViewModels\UsuarioViewModel.cs" />
+    <Compile Include="ViewModels\VentasAdministracionViewModel.cs" />
+    <Compile Include="ViewModels\VentasPresupuestosViewModel.cs" />
+    <Compile Include="Views\PaginaInicio.xaml.cs">
+      <DependentUpon>PaginaInicio.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Reportes\ReporteAdministracion.xaml.cs">
+      <DependentUpon>ReporteAdministracion.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Reportes\ReporteChequeEntrada.xaml.cs">
+      <DependentUpon>ReporteChequeEntrada.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Reportes\ReporteChequeSalida.xaml.cs">
+      <DependentUpon>ReporteChequeSalida.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Reportes\ComprobanteCompra.xaml.cs">
+      <DependentUpon>ComprobanteCompra.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Reportes\ReporteComprobanteEntrada.xaml.cs">
+      <DependentUpon>ReporteComprobanteEntrada.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Reportes\ReporteComprobanteSalida.xaml.cs">
+      <DependentUpon>ReporteComprobanteSalida.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Reportes\Presupuestos.xaml.cs">
+      <DependentUpon>Presupuestos.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Reportes\ReporteCuenta.xaml.cs">
+      <DependentUpon>ReporteCuenta.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Reportes\ReporteDeposito.xaml.cs">
+      <DependentUpon>ReporteDeposito.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Reportes\ReporteIvaCV.xaml.cs">
+      <DependentUpon>ReporteIvaCV.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Reportes\ReporteMaterialesUsados.xaml.cs">
+      <DependentUpon>ReporteMaterialesUsados.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Reportes\ReporteObra.xaml.cs">
+      <DependentUpon>ReporteObra.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Reportes\ReportePercepcion.xaml.cs">
+      <DependentUpon>ReportePercepcion.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Reportes\ReporteRetencion.xaml.cs">
+      <DependentUpon>ReporteRetencion.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\Banco\ReporteTesoreria.xaml.cs">
+      <DependentUpon>ReporteTesoreria.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Reportes\ReporteTransferencia.xaml.cs">
+      <DependentUpon>ReporteTransferencia.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\ABMs\BancoABM.xaml.cs">
+      <DependentUpon>BancoABM.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\ABMs\CategoriaABM.xaml.cs">
+      <DependentUpon>CategoriaABM.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\ABMs\CondicionIvaABM.xaml.cs">
+      <DependentUpon>CondicionIvaABM.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\ABMs\StockABM.xaml.cs">
+      <DependentUpon>StockABM.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\ABMs\Usuario.xaml.cs">
+      <DependentUpon>Usuario.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\Banco\BancoMenu.xaml.cs">
+      <DependentUpon>BancoMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\Banco\CuentaCorriente.xaml.cs">
+      <DependentUpon>CuentaCorriente.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\Banco\DepositoEntrada.xaml.cs">
+      <DependentUpon>DepositoEntrada.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\Banco\TransferenciaEntrada.xaml.cs">
+      <DependentUpon>TransferenciaEntrada.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\Banco\TransferenciaSalida.xaml.cs">
+      <DependentUpon>TransferenciaSalida.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\Caja\CajaCerradas.xaml.cs">
+      <DependentUpon>CajaCerradas.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\Caja\CajaMenu.xaml.cs">
+      <DependentUpon>CajaMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\Compra\ListadoComprobantesCompra.xaml.cs">
+      <DependentUpon>ListadoComprobantesCompra.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\Contratista\ContratistaABM.xaml.cs">
+      <DependentUpon>ContratistaABM.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\ABMs\DescripcionTareaABM.xaml.cs">
+      <DependentUpon>DescripcionTareaABM.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\Empleado\EmpleadoABM.xaml.cs">
+      <DependentUpon>EmpleadoABM.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\ABMs\EmpresaABM.xaml.cs">
+      <DependentUpon>EmpresaABM.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\ABMs\MaterialABM.xaml.cs">
+      <DependentUpon>MaterialABM.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\ABMs\PersonaABM.xaml.cs">
+      <DependentUpon>PersonaABM.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\ABMs\PrecioABM.xaml.cs">
+      <DependentUpon>PrecioABM.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\ABMs\ProveedorABM.xaml.cs">
+      <DependentUpon>ProveedorABM.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\ABMs\RubroABM.xaml.cs">
+      <DependentUpon>RubroABM.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\ABMs\SubRubroABM.xaml.cs">
+      <DependentUpon>SubRubroABM.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\ABMs\TipoGastoABM.xaml.cs">
+      <DependentUpon>TipoGastoABM.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\ABMs\ZonaABM.xaml.cs">
+      <DependentUpon>ZonaABM.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\Banco\Banco.xaml.cs">
+      <DependentUpon>Banco.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\BotonDesplegable.xaml.cs">
+      <DependentUpon>BotonDesplegable.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\Caja\Caja.xaml.cs">
+      <DependentUpon>Caja.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\Caja\Cheque.xaml.cs">
+      <DependentUpon>Cheque.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\Caja\ChequeEntrada.xaml.cs">
+      <DependentUpon>ChequeEntrada.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\Caja\CobrarCheque.xaml.cs">
+      <DependentUpon>CobrarCheque.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\Caja\ComprobanteEntrada.xaml.cs">
+      <DependentUpon>ComprobanteEntrada.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\Caja\ComprobanteSalida.xaml.cs">
+      <DependentUpon>ComprobanteSalida.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\Banco\CuentaCorrienteEntrada.xaml.cs">
+      <DependentUpon>CuentaCorrienteEntrada.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\Compra\CompraInsumos.xaml.cs">
+      <DependentUpon>CompraInsumos.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\ABMs\ObraABM.xaml.cs">
+      <DependentUpon>ObraABM.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\Contratista\ListadoAsistenciaContratista.xaml.cs">
+      <DependentUpon>ListadoAsistenciaContratista.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\Contratista\PantallaContratista.xaml.cs">
+      <DependentUpon>PantallaContratista.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\Empleado\ListaAsistenciaEmpleado.xaml.cs">
+      <DependentUpon>ListaAsistenciaEmpleado.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\Empleado\PantallaEmpleado.xaml.cs">
+      <DependentUpon>PantallaEmpleado.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\FormaPago\FormaPago.xaml.cs">
+      <DependentUpon>FormaPago.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\Gantt.xaml.cs">
+      <DependentUpon>Gantt.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\GanttReal.xaml.cs">
+      <DependentUpon>GanttReal.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\Mensaje.xaml.cs">
+      <DependentUpon>Mensaje.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\Model\CuadroInicio.cs" />
+    <Compile Include="Views\ViewControls\Model\ItemMenu.cs" />
+    <Compile Include="Views\ViewControls\Model\SubItem.cs" />
+    <Compile Include="Views\ViewControls\Obra\Empleado\EmpleadoObra.xaml.cs">
+      <DependentUpon>EmpleadoObra.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\Obra\Material\IngresoMaterial.xaml.cs">
+      <DependentUpon>IngresoMaterial.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\Obra\Jornal\Jornal.xaml.cs">
+      <DependentUpon>Jornal.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\Obra\Jornal\JornalDetalle.xaml.cs">
+      <DependentUpon>JornalDetalle.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\Obra\ObraDetalle.xaml.cs">
+      <DependentUpon>ObraDetalle.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\Obra\Planificacion\ObraPlanificacionDetalle.xaml.cs">
+      <DependentUpon>ObraPlanificacionDetalle.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\Obra\ObraView.xaml.cs">
+      <DependentUpon>ObraView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\Obra\Planificacion\ObraPlanificacion.xaml.cs">
+      <DependentUpon>ObraPlanificacion.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\Obra\Material\SalidaMaterial.xaml.cs">
+      <DependentUpon>SalidaMaterial.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\Obra\Tareas.xaml.cs">
+      <DependentUpon>Tareas.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\Presupuesto\DatosPresupuesto.xaml.cs">
+      <DependentUpon>DatosPresupuesto.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\Presupuesto\PresupuestoDetalle.xaml.cs">
+      <DependentUpon>PresupuestoDetalle.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\Presupuesto\PresupuestoInicio.xaml.cs">
+      <DependentUpon>PresupuestoInicio.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\Proveedor\Proveedor.xaml.cs">
+      <DependentUpon>Proveedor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\Venta\VentasAdministracion.xaml.cs">
+      <DependentUpon>VentasAdministracion.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\Venta\VentasPresupuestos.xaml.cs">
+      <DependentUpon>VentasPresupuestos.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Views\PaginaInicio.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Reportes\ReporteAdministracion.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Reportes\ReporteChequeEntrada.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Reportes\ReporteChequeSalida.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Reportes\ComprobanteCompra.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Reportes\ReporteComprobanteEntrada.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Reportes\ReporteComprobanteSalida.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Reportes\Presupuestos.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Reportes\ReporteCuenta.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Reportes\ReporteDeposito.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Reportes\ReporteIvaCV.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Reportes\ReporteMaterialesUsados.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Reportes\ReporteObra.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Reportes\ReportePercepcion.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Reportes\ReporteRetencion.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\Banco\ReporteTesoreria.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Reportes\ReporteTransferencia.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\ABMs\BancoABM.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\ABMs\CategoriaABM.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\ABMs\CondicionIvaABM.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\ABMs\StockABM.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\ABMs\Usuario.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\Banco\BancoMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\Banco\CuentaCorriente.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\Banco\DepositoEntrada.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\Banco\TransferenciaEntrada.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\Banco\TransferenciaSalida.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\Caja\CajaCerradas.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\Caja\CajaMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\Compra\ListadoComprobantesCompra.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\Contratista\ContratistaABM.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\ABMs\DescripcionTareaABM.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\Empleado\EmpleadoABM.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\ABMs\EmpresaABM.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Login.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Constantes\Constantes.cs" />
+    <Compile Include="Model\BasicModel.cs" />
+    <Compile Include="Model\UsuarioModel.cs" />
+    <Compile Include="Servicios\WebServices.cs" />
+    <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\LoginViewModel.cs" />
+    <Compile Include="Views\Login.xaml.cs">
+      <DependentUpon>Login.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Views\ViewControls\ABMs\MaterialABM.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\ABMs\PersonaABM.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\ABMs\PrecioABM.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\ABMs\ProveedorABM.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\ABMs\RubroABM.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\ABMs\SubRubroABM.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\ABMs\TipoGastoABM.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\ABMs\ZonaABM.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\Banco\Banco.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\BotonDesplegable.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\Caja\Caja.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\Caja\Cheque.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\Caja\ChequeEntrada.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\Caja\CobrarCheque.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\Caja\ComprobanteEntrada.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\Caja\ComprobanteSalida.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\Banco\CuentaCorrienteEntrada.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\Compra\CompraInsumos.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\ABMs\ObraABM.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\Contratista\ListadoAsistenciaContratista.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\Contratista\PantallaContratista.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\Empleado\ListaAsistenciaEmpleado.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\Empleado\PantallaEmpleado.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\FormaPago\FormaPago.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\Gantt.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\GanttReal.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\Mensaje.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\Obra\Empleado\EmpleadoObra.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\Obra\Material\IngresoMaterial.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\Obra\Jornal\Jornal.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\Obra\Jornal\JornalDetalle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\Obra\ObraDetalle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\Obra\Planificacion\ObraPlanificacionDetalle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\Obra\ObraView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\Obra\Planificacion\ObraPlanificacion.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\Obra\Material\SalidaMaterial.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\Obra\Tareas.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\Presupuesto\DatosPresupuesto.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\Presupuesto\PresupuestoDetalle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\Presupuesto\PresupuestoInicio.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\Proveedor\Proveedor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\Venta\VentasAdministracion.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewControls\Venta\VentasPresupuestos.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Licenses.licx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="CloudinaryDotNet">
+      <Version>1.8.0</Version>
+    </PackageReference>
+    <PackageReference Include="DocumentFormat.OpenXml">
+      <Version>2.9.1</Version>
+    </PackageReference>
+    <PackageReference Include="Dragablz">
+      <Version>0.0.3.203</Version>
+    </PackageReference>
+    <PackageReference Include="Infodinamica.Framework.Exportable">
+      <Version>2.0.1.18715</Version>
+    </PackageReference>
+    <PackageReference Include="LiveCharts.Wpf">
+      <Version>0.9.7</Version>
+    </PackageReference>
+    <PackageReference Include="MaterialDesignThemes">
+      <Version>2.6.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AspNet.WebApi">
+      <Version>5.2.7</Version>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>12.0.2</Version>
+    </PackageReference>
+    <PackageReference Include="Prism.Core">
+      <Version>7.2.0.1367</Version>
+    </PackageReference>
+    <PackageReference Include="Prism.DryIoc">
+      <Version>7.2.0.1367</Version>
+    </PackageReference>
+    <PackageReference Include="Prism.Forms">
+      <Version>7.2.0.1367</Version>
+    </PackageReference>
+    <PackageReference Include="WindowsBase">
+      <Version>4.6.1055</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GonelectLogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Imagenes\Obra.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Imagenes\GonelectLogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GonelectLogo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.2 %28x86 y x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="Microsoft.Office.Core">
+      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>8</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="Microsoft.Office.Interop.Excel">
+      <Guid>{00020813-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>9</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="VBIDE">
+      <Guid>{0002E157-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>5</VersionMajor>
+      <VersionMinor>3</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

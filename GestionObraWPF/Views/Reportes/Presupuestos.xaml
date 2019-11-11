@@ -1,0 +1,70 @@
+﻿<UserControl x:Class="GestionObraWPF.Views.Reportes.Presupuestos"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:prism="http://prismlibrary.com/"            
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:chart="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             prism:ViewModelLocator.AutoWireViewModel="True">
+    <UserControl.InputBindings>
+        <KeyBinding Key="Return" Command="{Binding Buscar}" CommandTarget="{Binding ElementName=txt}" />
+    </UserControl.InputBindings>
+        <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="150"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="300"/>
+        </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0"/>
+            <DataGrid  Grid.Row="1" TextBlock.TextAlignment="Center" x:Name="grilla"  AutoGenerateColumns="False" CanUserResizeColumns="False"  IsTextSearchEnabled="True" IsReadOnly="True" ItemsSource="{Binding Presupuestos}" SelectionMode="Extended" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Fecha" Binding="{Binding FechaPresupuesto,StringFormat=dd/MM/yyyy}"/>
+                    <DataGridTextColumn Header="Numero" Binding="{Binding Numero}"/>
+                    <DataGridTextColumn Header="Descripcion" Binding="{Binding Descripcion}"/>
+                    <DataGridTextColumn Header="Obra" Binding="{Binding Obra.Descripcion}"/>
+                    <DataGridTextColumn Header="Cliente" Binding="{Binding Empresa.RazonSocial}"/>
+                    <DataGridTextColumn Header="Subtotal" Binding="{Binding PrecioCliente,StringFormat=C}"/>
+                    <DataGridTextColumn Header="Interes" Binding="{Binding Interes,StringFormat=C}"/>
+                    <DataGridTextColumn Header="Descuento" Binding="{Binding Descuento,StringFormat=C}"/>
+                    <DataGridTextColumn Header="Iva" Binding="{Binding Iva,StringFormat=C}"/>
+                    <DataGridTextColumn Header="Percepcion" Binding="{Binding Percepciones,StringFormat=C}"/>
+                    <DataGridTextColumn Header="Retencion" Binding="{Binding Retenciones,StringFormat=C}"/>
+                    <DataGridTextColumn Header="Total" Binding="{Binding Total,StringFormat=C}"/>
+                    <DataGridTextColumn Header="Actualmente cobrado" Binding="{Binding Cobrado,StringFormat=C}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <TextBlock FontFamily="Poppins" FontSize="18" Text="Ventas" Margin="10"/>
+            <StackPanel HorizontalAlignment="Center"  Margin="30" Grid.Column="0" Grid.ColumnSpan="3">
+            <StackPanel HorizontalAlignment="Left" Margin="55,0" Orientation="Horizontal">
+                <DatePicker md:HintAssist.Hint="Fecha desde" DisplayDateStart="01-01-2000" SelectedDateFormat="Short" SelectedDate="{Binding FechaDesde}" Margin="0,0,30,0"/>
+                <DatePicker md:HintAssist.Hint="Fecha hasta" DisplayDateStart="01-01-2000" SelectedDateFormat="Short" SelectedDate="{Binding FechaHasta}" Margin="0,0,30,0" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <ToggleButton IsChecked="{Binding ActivarClientes}" Margin="10,0"/>
+                <ComboBox IsEditable="True" SelectedItem="{Binding Cliente}" IsEnabled="{Binding ActivarClientes}"  md:HintAssist.Hint="Cliente" Width="210" HorizontalAlignment="Left" Margin="5,0" DisplayMemberPath="RazonSocial" Style="{DynamicResource MaterialDesignFloatingHintComboBox}"  ItemsSource="{Binding Clientes}" />
+                <Button Margin="10,0" Command="{Binding FiltrarCommand}" Content="Filtrar"/>
+                <Button Margin="10,0" Click="Button_Click"  Content="Exportar"/>
+            </StackPanel>
+        </StackPanel>
+            <StackPanel Grid.Row="2" Grid.IsSharedSizeScope="False"  VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10">
+                <TextBlock FontFamily="Poppins" FontSize="18" Text="{Binding Intereses,StringFormat=Intereses: {0:C}}"/>
+                <TextBlock FontFamily="Poppins" FontSize="18" Text="{Binding Descuentos,StringFormat=Descuentos: {0:C}}"/>
+                <TextBlock FontFamily="Poppins" FontSize="18" Text="{Binding Iva,StringFormat=Iva: {0:C}}"/>
+                <TextBlock FontFamily="Poppins" FontSize="18" Text="{Binding Percepciones,StringFormat=Percepciones: {0:C}}"/>
+                <TextBlock FontFamily="Poppins" FontSize="18" Text="{Binding Retenciones,StringFormat=Retenciones: {0:C}}"/>
+                <TextBlock FontFamily="Poppins" FontSize="18" Text="{Binding Cobrado,StringFormat=Cobrado: {0:C}}"/>
+                <TextBlock FontFamily="Poppins" FontSize="18" Text="{Binding Total,StringFormat=Total a cobrar: {0:C}}"/>
+                <TextBlock FontFamily="Poppins" FontSize="18" Text="{Binding Diferencia,StringFormat=Diferencia: {0:C}}"/>
+            </StackPanel>
+            <StackPanel Grid.Row="2" Grid.IsSharedSizeScope="False"  VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10">
+                <TextBlock FontFamily="Poppins" FontSize="18" Text="{Binding Blanco,StringFormat=Pagos en blanco: {0}}"/>
+                <TextBlock FontFamily="Poppins" FontSize="18" Text="{Binding Negro,StringFormat=Pagos en negro: {0}}"/>
+            </StackPanel>
+            <!--<chart:PieChart Grid.Row="2" HorizontalAlignment="Left" Margin="5,0">
+                <chart:PieChart Background="#FFFAFAFA" Series="{Binding Series}" DataClick="PieChart_DataClick" LegendLocation="Right"  Hoverable="False" DataTooltip="{x:Null}" Grid.Row="1" Height="300" Width="400" HorizontalAlignment="Center" VerticalAlignment="Center">
+                </chart:PieChart>
+            </chart:PieChart>-->
+        </Grid>
+</UserControl>

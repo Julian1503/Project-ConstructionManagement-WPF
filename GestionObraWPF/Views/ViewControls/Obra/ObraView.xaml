@@ -1,0 +1,93 @@
+﻿<UserControl x:Class="GestionObraWPF.Views.ViewControls.Obra.ObraView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:prism="http://prismlibrary.com/"             
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:conv="clr-namespace:GestionObraWPF.Converter"
+             prism:ViewModelLocator.AutoWireViewModel="True"  Background="White">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <conv:EnumToStringConverter x:Key="decimal"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <TextBlock TextAlignment="Center" Text="No se encontro ninguna obra" Visibility="{Binding SinObras}" FontFamily="Poppins" Foreground="Gray" Margin="0,10,0,0"/>
+        <ListView x:Name="lista" Margin="0,38,0,0" ItemsSource="{Binding Obras}">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <i:InvokeCommandAction 
+                        Command="{Binding Command}"
+                        CommandParameter="{Binding ElementName=lista, Path=SelectedItem}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <!--<DockPanel LastChildFill="False" Width="900">
+                        <StackPanel DockPanel.Dock="Left">
+                            <TextBlock FontWeight="DemiBold" FontFamily="Poppins" TextAlignment="Center" Text="Codigo"/>
+                            <TextBlock TextAlignment="Center" FontFamily="Poppins" Text="{Binding Codigo}"/>
+                        </StackPanel>
+                        <TextBlock Margin="50,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Descripcion}"/>
+                        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock x:Name="veamo" FontWeight="DemiBold" VerticalAlignment="Center" FontFamily="Poppins" Text="{Binding EstadoObra ,Converter={StaticResource decimal}}">
+                                <TextBlock.Style>
+                                    <Style TargetType="{x:Type TextBlock}">
+                                        <Setter Property="Text" Value="En proceso" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding EstadoObra}" Value="EnProceso">
+                                                <Setter Property="Foreground" Value="#FFD9FF58"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding EstadoObra}" Value="Finalizada">
+                                                <Setter Property="Foreground" Value="LightGreen"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </StackPanel>
+                    </DockPanel>-->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="90"/>
+                            <ColumnDefinition Width="400"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel VerticalAlignment="Center" ContextMenuService.HasDropShadow="True"  DockPanel.Dock="Left">
+                            <TextBlock FontWeight="DemiBold" FontFamily="Poppins" TextAlignment="Center" Text="Codigo"/>
+                            <TextBlock TextAlignment="Center" FontFamily="Poppins" Text="{Binding Codigo}"/>
+                        </StackPanel>
+                        <TextBlock  Grid.Column="1" ContextMenuService.HasDropShadow="True"  Margin="50,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Descripcion}"/>
+
+                        <StackPanel Margin="20,0" Grid.Column="2">
+                            <TextBlock HorizontalAlignment="Left" TextAlignment="Center" FontWeight="DemiBold" FontFamily="Poppins" Text="Cliente: "/>
+                            <TextBlock HorizontalAlignment="Left" TextAlignment="Center" FontFamily="Poppins" Text="{Binding Propietario.RazonSocial,StringFormat=Empresa: {0} }"/>
+                            <TextBlock HorizontalAlignment="Left" TextAlignment="Center" FontFamily="Poppins" Text="{Binding Propietario.Cuit,StringFormat=Cuit: {0} }"/>
+                            <TextBlock HorizontalAlignment="Left" TextAlignment="Center" FontFamily="Poppins" Text="{Binding Propietario.Telefono,StringFormat=Telefono: {0} }"/>
+                        </StackPanel>
+                        <StackPanel Margin="20,0" Grid.Column="3">
+                            <TextBlock HorizontalAlignment="Left" TextAlignment="Center" FontWeight="DemiBold" FontFamily="Poppins" Text="Datos: "/>
+                            <TextBlock HorizontalAlignment="Left" TextAlignment="Center" FontFamily="Poppins" Text="{Binding Encargado.ApYNom,StringFormat=Encargado: {0} }"/>
+                            <TextBlock HorizontalAlignment="Left" TextAlignment="Center" FontFamily="Poppins" Text="{Binding Zona.Descripcion,StringFormat=Zona : {0} }"/>
+                        </StackPanel>
+                        <TextBlock>
+                            <TextBlock.Style>
+                                <Style>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding EstadoDeCompra}" >
+                                            <Setter Property="TextBox.Text" Value="Sin cobrar/Parcialmente cobrado" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding EstadoDeCompra}" >
+                                            <Setter Property="TextBox.Text" Value="Cobrado" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</UserControl>

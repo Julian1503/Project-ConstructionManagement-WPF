@@ -1,0 +1,135 @@
+﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:prism="http://prismlibrary.com/"   
+             xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:conv="clr-namespace:GestionObraWPF.Converter"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             x:Class="GestionObraWPF.Views.ViewControls.Obra.Planificacion.ObraPlanificacionDetalle"
+             prism:ViewModelLocator.AutoWireViewModel="True" Cursor="{Binding Cursor}" Background="White" >
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <conv:RoundMyNumberConverter x:Key="decimal"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.ColumnSpan="3" Grid.RowSpan="2">
+                    <Image Opacity="0.7" Source="https://www.fabricantes-maquinaria-industrial.es/wp-content/uploads/2016/05/Maquinaria-de-obra-p%C3%BAblica-y-construcci%C3%B3n.-Las-m%C3%A1s-usadas..jpg" Stretch="UniformToFill" Height="250"/>
+                </StackPanel>
+                <TextBlock Grid.Column="1" Opacity="1" Text="{Binding Obra.Descripcion}" Foreground="White" FontSize="20" FontFamily="Poppins" FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="74,110" Grid.RowSpan="2"/>
+                <Button Command="{Binding TerminarPlanificacion}"  md:ColorZoneAssist.Mode="Dark" Grid.Column="2" Width="180" Height="80" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="20">
+                    <StackPanel>
+                        <md:PackIcon Kind="Check" HorizontalAlignment="Center" Width="50" Height="50" Foreground="LightGreen"/>
+                        <TextBlock TextAlignment="Center" Text="Aceptar la planificacion" Foreground="LightGreen"/>
+                    </StackPanel>
+                </Button>
+
+            </Grid>
+            <dragablz:TabablzControl Grid.Row="1">
+                <TabItem Header="Tareas">
+                    <ContentControl prism:RegionManager.RegionName="RegionTareaPlanificacion"/>
+                </TabItem>
+                <TabItem IsEnabled="{Binding DesactivarGrafica}" Header="Grafica" IsSelected="{Binding Grafica}">
+                    <ContentControl prism:RegionManager.RegionName="Gantt"/>
+                </TabItem>
+                <!--  <TabItem Header="Informe de obra para presupuesto" IsSelected="{Binding InformeTab}">
+                    <ContentControl prism:RegionManager.RegionName="RegionInformeObra"/>
+                </TabItem>-->
+            </dragablz:TabablzControl>
+            <!--<md:DialogHost IsOpen="{Binding MostrarPopMaterial}" x:Name="dialogError" Grid.RowSpan="2">
+                <md:DialogHost.DialogContent>
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="1" Margin="20">
+                            <TextBox Text="{Binding MaterialObra.Cantidad}" IsEnabled="{Binding BloquearControlesMaterial}" md:HintAssist.Hint="Cantidad" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"/>
+                            <ComboBox  md:HintAssist.Hint="Material"  TextSearch.TextPath="Descripcion" SelectedItem="{Binding IngresoMaterial.Material}"  IsEnabled="{Binding BloquearControlesMaterial}"   Style="{DynamicResource MaterialDesignFloatingHintComboBox}"  ItemsSource="{Binding Materiales}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Source="{Binding Path}" Width="50"/>
+                                            <TextBlock Text="{Binding Descripcion}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal"  Margin="0,20,0,0">
+                                <Button Content="{Binding BotonMaterial}" Style="{DynamicResource MaterialDesignFlatButton}" Command="{Binding IngresarMaterialesCommand}" Margin="0,0,15,0" Width="86" />
+                                <Button Margin="15,0,0,0" Content="Cancelar" Command="{x:Static md:DialogHost.CloseDialogCommand}" CommandParameter="{Binding ElementName=dialogError}"
+                        Style="{DynamicResource MaterialDesignFlatButton}"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </md:DialogHost.DialogContent>
+            </md:DialogHost>
+            <md:DialogHost IsOpen="{Binding MostrarPopUpEmpleado}" x:Name="dialogTarea" Grid.RowSpan="2">
+                <md:DialogHost.DialogContent>
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="1" Margin="20">
+                            <ComboBox  md:HintAssist.Hint="Empleado"  TextSearch.TextPath="ApYNom" SelectedItem="{Binding ObraEmpleado.Empleado}"  IsEnabled="{Binding BloquearControlesEmpleado}"   Style="{DynamicResource MaterialDesignFloatingHintComboBox}"  ItemsSource="{Binding Empleados}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Source="{Binding Path}" Width="50"/>
+                                            <TextBlock Text="{Binding ApYNom}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal"  Margin="0,20,0,0">
+                                <Button Content="{Binding BotonEmpleado}" Style="{DynamicResource MaterialDesignFlatButton}" Command="{Binding IngresarEmpleadosCommand}" Margin="0,0,15,0" Width="86" />
+                                <Button Margin="15,0,0,0" Content="Cancelar" Command="{Binding CancelarEmpleadoCommand}" Style="{DynamicResource MaterialDesignFlatButton}"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </md:DialogHost.DialogContent>
+            </md:DialogHost>-->
+            <md:DialogHost IsOpen="{Binding MostrarCrearObra}" x:Name="dialogTarea" Grid.RowSpan="2" Grid.ColumnSpan="3">
+                <md:DialogHost.DialogContent>
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="1" Margin="20">
+                            <TextBox Text="{Binding Tarea.NumeroOrden}" PreviewTextInput="NumberValidationTextBox" IsEnabled="{Binding ControlesDialog}" md:HintAssist.Hint="Numero de orden" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,15,0,15">
+                                <TextBlock Text="Precede :" Margin="0,0,10,0" IsEnabled="{Binding ControlesDialog}"/>
+                                <ToggleButton  Style="{StaticResource MaterialDesignSwitchToggleButton}" ToolTip="¿Precede alguna tarea?" x:Name="asistio" IsChecked="{Binding Tarea.Precede}" IsEnabled="{Binding ControlesDialog}"/>
+                            </StackPanel>
+                            <ComboBox IsEditable="True" SelectedItem="{Binding Tarea.DescripcionTarea}"  md:HintAssist.Hint="Tarea" IsEnabled="{Binding ControlesDialog}" DisplayMemberPath="Descripcion" Style="{DynamicResource MaterialDesignFloatingHintComboBox}"  ItemsSource="{Binding DescripcionTareas}" />
+                            <TextBox  Text="{Binding Tarea.Duracion, StringFormat=\{0:hh\\:mm\}}" MaxLength="5" PreviewTextInput="TextBox_PreviewTextInput"   IsEnabled="{Binding ControlesDialog}"  md:HintAssist.Hint="Duracion estimada" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"/>
+                            <TextBox  Width="300" md:HintAssist.Hint="Observacion"  AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" IsEnabled="{Binding ControlesDialog}" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" TextWrapping="Wrap" Text="{Binding Tarea.Observacion}"/>
+                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal"  Margin="0,20,0,0">
+                                <Button Content="{Binding btnDialogText}" Style="{DynamicResource MaterialDesignFlatButton}" Command="{Binding CrearCommand}" Margin="0,0,15,0" Width="86" />
+                                <Button Margin="15,0,0,0" Content="Cancelar" Command="{Binding CancelarCommand}" Style="{DynamicResource MaterialDesignFlatButton}"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </md:DialogHost.DialogContent>
+            </md:DialogHost>
+            
+        </Grid>
+    </ScrollViewer>
+</UserControl>

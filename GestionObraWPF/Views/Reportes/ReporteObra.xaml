@@ -1,0 +1,120 @@
+﻿<UserControl x:Class="GestionObraWPF.Views.Reportes.ReporteObra"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+           xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:prism="http://prismlibrary.com/"         
+             xmlns:conv="clr-namespace:GestionObraWPF.Converter"
+             xmlns:chart="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:gantt="clr-namespace:GestionObraWPF.Views.ViewControls"
+             prism:ViewModelLocator.AutoWireViewModel="True">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <conv:ConvertDate x:Key="date"/>
+            <conv:BoolConverterToYesNo x:Key="bool"/>
+            <gantt:Gantt x:Key="grafico"/>
+            <gantt:GanttReal x:Key="real"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <ScrollViewer>
+        <Grid ScrollViewer.CanContentScroll="True">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="120"/>
+                <RowDefinition Height="400"/>
+                <RowDefinition Height="400"/>
+                <RowDefinition Height="400"/>
+                <RowDefinition Height="600"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0"/>
+            <DataGrid x:Name="Obra0"  Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="1" Margin="10"  TextBlock.TextAlignment="Center" AutoGenerateColumns="False" CanUserResizeColumns="False"  IsTextSearchEnabled="True" IsReadOnly="True" ItemsSource="{Binding Jornales}" SelectionMode="Extended" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Dia del jornal" Binding="{Binding DiaJornal,Converter={StaticResource date}}"/>
+                    <DataGridTextColumn Header="Viatico" Binding="{Binding Viatico}"/>
+                    <DataGridTextColumn Header="Gasolina" Binding="{Binding Gasolina}"/>
+                    <DataGridTextColumn Header="Multa" Binding="{Binding Multas}"/>
+                    <DataGridTextColumn Header="Repuesto" Binding="{Binding Repuestos}"/>
+                    <DataGridTextColumn Header="Otro" Binding="{Binding Otros}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <StackPanel Grid.Row="2" Grid.Column="1" Grid.IsSharedSizeScope="False"  VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10">
+                <TextBlock FontFamily="Poppins" FontSize="18" Text="{Binding Viatico,StringFormat=Gastos en viaticos: {0:C}}"/>
+                <TextBlock FontFamily="Poppins" FontSize="18" Text="{Binding Gasolina,StringFormat=Gastos en gasolina: {0:C}}"/>
+                <TextBlock FontFamily="Poppins" FontSize="18" Text="{Binding Multa,StringFormat=Gastos en multas: {0:C}}"/>
+                <TextBlock FontFamily="Poppins" FontSize="18" Text="{Binding Repuesto,StringFormat=Gastos en repuestos: {0:C}}"/>
+                <TextBlock FontFamily="Poppins" FontSize="18" Text="{Binding Otro,StringFormat=Otros: {0:C}}"/>
+                <TextBlock FontFamily="Poppins" FontSize="18" Text="{Binding Compras,StringFormat=Compras: {0:C}}"/>
+                <TextBlock FontFamily="Poppins" FontSize="18" Text="{Binding Total,StringFormat=Total: {0:C}}"/>
+            </StackPanel>
+            <Grid Grid.Column="1" Grid.Row="3">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Grafica de gastos" FontWeight="DemiBold" FontSize="20" FontFamily="Poppins" TextAlignment="Center" />
+                <chart:PieChart Background="#FFFAFAFA" Series="{Binding Series}" DataClick="PieChart_DataClick" LegendLocation="Right"  Hoverable="False" DataTooltip="{x:Null}" Grid.Row="1" Height="400" Width="400" HorizontalAlignment="Center" VerticalAlignment="Center">
+                </chart:PieChart>
+            </Grid>
+            <DataGrid x:Name="Obra1" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="1"  Margin="10"   TextBlock.TextAlignment="Center" AutoGenerateColumns="False" CanUserResizeColumns="False"  IsTextSearchEnabled="True" IsReadOnly="True" ItemsSource="{Binding Materiales}" SelectionMode="Extended" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Fecha de uso" Binding="{Binding Jornal.DiaJornal,Converter={StaticResource date}}"/>
+                    <DataGridTextColumn Header="Material" Binding="{Binding Material.Descripcion}"/>
+                    <DataGridTextColumn Header="Utilizado" Binding="{Binding CantidadUsado}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <StackPanel HorizontalAlignment="Center"  Margin="30" Grid.ColumnSpan="2" >
+                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                    <ComboBox VerticalAlignment="Center" Grid.ColumnSpan="2" SelectedItem="{Binding Obra}" Margin="0,0,30,12"  Width="300"  md:HintAssist.Hint="Obra"   Style="{DynamicResource MaterialDesignFloatingHintComboBox}"  ItemsSource="{Binding Obras}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Codigo}" Margin="0,0,10,0"/>
+                                    <TextBlock Text="{Binding Descripcion}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <Button Command="{Binding FiltrarCommand}" Content="Filtrar"/>
+                    <Button Margin="10,0" Command="{Binding Export}"  Content="Exportar"/>
+                </StackPanel>
+            </StackPanel>
+            <DataGrid  x:Name="Obra2" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="1"  Margin="10"  TextBlock.TextAlignment="Center" AutoGenerateColumns="False" CanUserResizeColumns="False"  IsTextSearchEnabled="True" IsReadOnly="True" ItemsSource="{Binding Utilitarios}" SelectionMode="Extended" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                    <DataGrid.Columns>
+                    <DataGridTextColumn Header="Fecha de ingreso" Binding="{Binding FechaIngreso,Converter={StaticResource date}}"/>
+                    <DataGridTextColumn Header="Utilitario" Binding="{Binding Material.Descripcion}"/>
+                    <DataGridTextColumn Header="Encargado" Binding="{Binding Encargado.ApYNom}"/>
+                    <DataGridTextColumn Header="Usado" Binding="{Binding Cantidad}"/>
+                    <DataGridTextColumn Header="Devuelto" Binding="{Binding CantidadDevuelta}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            <Grid Grid.Row="4">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Tiempo planificado"  FontWeight="DemiBold" FontSize="20"  FontFamily="Poppins" TextAlignment="Center" />
+                <ContentControl Content="{StaticResource grafico}" Grid.Row="1"/>
+            </Grid>
+            <Grid Grid.Row="5" Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Tiempo real empleado" FontWeight="DemiBold" FontSize="20"  FontFamily="Poppins" TextAlignment="Center" />
+                <ContentControl Content="{StaticResource real}" Grid.Row="1" />
+            </Grid>
+            <DataGrid Grid.Row="2" x:Name="Obra3" Grid.Column="0"  Margin="10"  TextBlock.TextAlignment="Center" AutoGenerateColumns="False" CanUserResizeColumns="False"  IsTextSearchEnabled="True" IsReadOnly="True" ItemsSource="{Binding ComprobantesCompra}" SelectionMode="Extended" HorizontalContentAlignment="Left" VerticalContentAlignment="Stretch">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Fecha" Binding="{Binding Fecha,Converter={StaticResource date}}"/>
+                    <DataGridTextColumn Header="Numero de compra" Binding="{Binding NumeroCompra}"/>
+                    <DataGridTextColumn Header="Cuit" Binding="{Binding CUIT}"/>
+                    <DataGridTextColumn Header="Proveedor" Binding="{Binding Proveedor.RazonSocial}"/>
+                    <DataGridTextColumn Header="Total" Binding="{Binding Total}"/>
+                    <DataGridTextColumn Header="Pagado" Binding="{Binding Pagado,Converter={StaticResource bool}}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

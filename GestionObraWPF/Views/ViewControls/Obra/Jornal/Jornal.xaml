@@ -1,0 +1,44 @@
+﻿<UserControl x:Class="GestionObraWPF.Views.ViewControls.Obra.Jornal.Jornal"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:prism="http://prismlibrary.com/"       
+             xmlns:conv="clr-namespace:GestionObraWPF.Converter"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             prism:ViewModelLocator.AutoWireViewModel="True">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <conv:ConvertDate x:Key="date"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid Background="#FFE5E5E5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <DataGrid ItemsSource="{Binding Jornales}" x:Name="grilla" TextBlock.TextAlignment="Center" SelectionMode="Extended" SelectedItem="{Binding Jornal}" Grid.Row="1"
+            AutoGenerateColumns="False" CanUserResizeColumns="False" IsTextSearchEnabled="True" IsReadOnly="True" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" IsSynchronizedWithCurrentItem="True">
+            <DataGrid.InputBindings>
+                <MouseBinding
+            MouseAction="LeftDoubleClick"
+            Command="{Binding DoubleClickCommand}"
+            CommandParameter="{Binding ElementName=grilla, Path=SelectedItem}"/>
+            </DataGrid.InputBindings>
+            <DataGrid.Columns>
+                <DataGridTextColumn  Header="Numero de orden" Binding="{Binding NumeroOrden}"/>
+                <DataGridTextColumn  Header="Dia" Binding="{Binding DiaJornal,Converter={StaticResource date}}"/>
+                <DataGridTextColumn  Header="Viatico" Binding="{Binding Viatico}"/>
+                <DataGridTextColumn  Header="Repuestos" Binding="{Binding Repuestos}"/>
+                <DataGridTextColumn  Header="Multas" Binding="{Binding Multas}"/>
+                <DataGridTextColumn  Header="Combustible" Binding="{Binding Gasolina}"/>
+                <DataGridTextColumn  Header="Otros gastos" Binding="{Binding Otros}"/>
+
+            </DataGrid.Columns>
+        </DataGrid>
+        <ToolBar Visibility="{Binding Visible}" Grid.Row="0">
+            <Button Margin="5" Width="Auto" Command="{Binding CrearObraCommand}" Content="Crear nueva Jornal"/>
+            <Button Margin="5" Width="Auto" Command="{Binding EditarObraCommand}" Content="Editar Jornal"/>
+            <Button Margin="5" Width="Auto" Command="{Binding EliminarObraCommand}" Content="Eliminar Jornal"/>
+            <Button Margin="5" Width="Auto" Click="Button_Click" Content="Exportar"/>
+        </ToolBar>
+    </Grid>
+</UserControl>

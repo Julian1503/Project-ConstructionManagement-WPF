@@ -1,0 +1,314 @@
+﻿<UserControl x:Class="GestionObraWPF.Views.ViewControls.Venta.VentasPresupuestos"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:prism="http://prismlibrary.com/" 
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:conv="clr-namespace:GestionObraWPF.Converter"
+                xmlns:System="clr-namespace:System;assembly=mscorlib"
+             xmlns:const ="clr-namespace:GestionObraWPF.Constantes"
+             xmlns:comp="clr-namespace:GestionObraWPF.Views.ViewControls.Caja"
+             prism:ViewModelLocator.AutoWireViewModel="True" x:Name="ventana" Background="White">
+    <UserControl.Resources>
+            <ResourceDictionary>
+                <conv:EnumDescriptionConverter x:Key="Converter"/>
+                <ObjectDataProvider x:Key="enum" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+                    <ObjectDataProvider.MethodParameters>
+                        <x:Type TypeName="const:TipoComprobanteEntrada"/>
+                    </ObjectDataProvider.MethodParameters>
+                </ObjectDataProvider>
+            <comp:ComprobanteEntrada x:Key="compro"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <UserControl.InputBindings>
+        <KeyBinding Key="Esc" Command="{Binding SacarPantalla}" CommandTarget="{Binding ElementName=dialogError}"/>
+    </UserControl.InputBindings>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="11*"/>
+        </Grid.RowDefinitions>
+        <TextBlock TextAlignment="Center" Grid.Row="1" Text="No se encontro ningun presupuesto" VerticalAlignment="Top" Visibility="{Binding SinPresupuesto}" FontFamily="Poppins" Foreground="Gray" Margin="0,20,0,0" Grid.RowSpan="2"/>
+        <ListView md:ListViewAssist.ListViewItemPadding="10" x:Name="lista" Margin="0,2,0,0" ItemsSource="{Binding Presupuestos}" Grid.Row="1">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <i:InvokeCommandAction 
+                        Command="{Binding Command}"
+                        CommandParameter="{Binding ElementName=lista, Path=SelectedItem}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <ListView.ItemTemplate>
+                <DataTemplate >
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="90"/>
+                            <ColumnDefinition Width="400"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel VerticalAlignment="Center" ContextMenuService.HasDropShadow="True"  DockPanel.Dock="Left">
+                            <TextBlock FontWeight="DemiBold" FontFamily="Poppins" TextAlignment="Center" Text="Numero"/>
+                            <TextBlock TextAlignment="Center" FontFamily="Poppins" Text="{Binding Numero}"/>
+                        </StackPanel>
+                        <TextBlock  Grid.Column="1" ContextMenuService.HasDropShadow="True"  Margin="50,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Titulo}"/>
+
+                        <StackPanel Margin="20,0" Grid.Column="2">
+                            <TextBlock HorizontalAlignment="Left" TextAlignment="Center" FontWeight="DemiBold" FontFamily="Poppins" Text="Cliente: "/>
+                            <TextBlock HorizontalAlignment="Left" TextAlignment="Center" FontFamily="Poppins" Text="{Binding Empresa.RazonSocial,StringFormat=Empresa: {0} }"/>
+                                <TextBlock HorizontalAlignment="Left" TextAlignment="Center" FontFamily="Poppins" Text="{Binding Empresa.Cuit,StringFormat=Cuit: {0} }"/>
+                                <TextBlock HorizontalAlignment="Left" TextAlignment="Center" FontFamily="Poppins" Text="{Binding Empresa.Telefono,StringFormat=Telefono: {0} }"/>
+                            </StackPanel>
+                        <StackPanel Margin="20,0" Grid.Column="3">
+                            <TextBlock HorizontalAlignment="Left" TextAlignment="Center" FontWeight="DemiBold" FontFamily="Poppins" Text="Obra: "/>
+                            <TextBlock HorizontalAlignment="Left" TextAlignment="Center" FontFamily="Poppins" Text="{Binding Obra.Codigo,StringFormat=Codigo: {0} }"/>
+                            <TextBlock HorizontalAlignment="Left" TextAlignment="Center" FontFamily="Poppins" Text="{Binding Obra.Descripcion,StringFormat=Descripcion: {0} }"/>
+                            <TextBlock HorizontalAlignment="Left" TextAlignment="Center" FontFamily="Poppins" Text="{Binding Obra.Encargado.ApYNom,StringFormat=Encargado: {0} }"/>
+                        </StackPanel>
+                        <TextBlock  VerticalAlignment="Center" TextWrapping="Wrap" Grid.Column="4" Margin="20,0,0,0" HorizontalAlignment="Center" >
+                            <TextBlock.Style>
+                                <Style>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding EstadoDeCobro}" Value="SinCobrar" >
+                                            <Setter Property="TextBlock.Text" Value="Sin cobrar/Parcialmente cobrado" />
+                                            <Setter Property="TextBlock.Foreground" Value="#F8D760" />
+                                            <Setter Property="TextBlock.FontWeight" Value="DemiBold" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding EstadoDeCobro}" Value="Cobrado" >
+                                            <Setter Property="TextBlock.Text" Value="Cobrado" />
+                                            <Setter Property="TextBlock.Foreground" Value="#AEE1A8" />
+                                            <Setter Property="TextBlock.FontWeight" Value="DemiBold" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <md:DialogHost IsOpen="{Binding MostrarOpc}"  Grid.RowSpan="2">
+            <md:DialogHost.DialogContent>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Button HorizontalAlignment="Right" Margin="5" Width="40" Height="40" Style="{StaticResource MaterialDesignFloatingActionLightButton}"  Command="{Binding Cerrar}">
+                        <md:PackIcon Kind="Close"/>
+                    </Button>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="5" >
+                        <Button Width="150" Height="100" IsEnabled="{Binding Negro}" Margin="20,5" Command="{Binding PagoSinComprobante}">
+                            <TextBlock TextWrapping="Wrap" Text="Cobro sin registro"/>
+                        </Button>
+                        <Button Width="150" Height="100"  IsEnabled="{Binding Blanco}" Margin="20,5"  Command="{Binding PagoConComprobante}">
+                            <TextBlock TextWrapping="Wrap" Text="Cobro con registro"/>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </md:DialogHost.DialogContent>
+        </md:DialogHost>
+        <md:DialogHost IsOpen="{Binding MostarNegro }" Grid.RowSpan="2">
+            <md:DialogHost.DialogContent>
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel Margin="5">
+                            <TextBlock  HorizontalAlignment="Left" FontSize="16" FontFamily="Poppins" FontWeight="DemiBold" Text="{Binding Total,StringFormat=Total: {0:C}}"/>
+                            <TextBlock  HorizontalAlignment="Left" FontSize="16" FontFamily="Poppins" FontWeight="DemiBold" Text="{Binding Presupuesto.Cobrado,StringFormat=Cobrado: {0:C}}"/>
+                            <TextBox PreviewTextInput="NumberValidationTextBox"  Width="260"  md:HintAssist.Hint="Cobrar" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" Margin="0,5,0,3" FontFamily="Poppins" FontSize="14" Text="{Binding Cobrar, UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal"  Margin="0,20,0,20">
+                        <Button  Style="{DynamicResource MaterialDesignFlatButton}" Command="{Binding CrearCommand}" Margin="0,0,15,0" Width="86" Content="Cobrar"/>
+                        <Button Margin="15,0,0,0" Content="Cancelar" Command="{Binding CancelarNegroCommand}"
+                        Style="{DynamicResource MaterialDesignFlatButton}"/>
+                    </StackPanel>
+                </StackPanel>
+            </md:DialogHost.DialogContent>
+        </md:DialogHost>
+        <md:DialogHost IsOpen="{Binding MostrarBlanco }" Grid.RowSpan="2">
+            <md:DialogHost.DialogContent>
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel Margin="5">
+                            <TextBlock  HorizontalAlignment="Left" FontSize="16" FontFamily="Poppins" FontWeight="DemiBold" Text="{Binding Total,StringFormat=Total: {0:C}}"/>
+                            <TextBlock  HorizontalAlignment="Left" FontSize="16" FontFamily="Poppins" FontWeight="DemiBold" Text="{Binding Presupuesto.Cobrado,StringFormat=Cobrado: {0:C}}"/>
+                            <TextBox PreviewTextInput="NumberValidationTextBox"  Width="260"  md:HintAssist.Hint="Cobrar" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" Margin="0,5,0,3" FontFamily="Poppins" FontSize="14" Text="{Binding Cobrar,  UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal"  Margin="0,20,0,20">
+                        <Button  Style="{DynamicResource MaterialDesignFlatButton}" Command="{Binding CrearCommand}" Margin="0,0,15,0" Width="86" Content="Cobrar"/>
+                        <Button Margin="15,0,0,0" Content="Cancelar" Command="{Binding CancelarBlancoCommand }"
+                        Style="{DynamicResource MaterialDesignFlatButton}"/>
+                    </StackPanel>
+                </StackPanel>
+            </md:DialogHost.DialogContent>
+        </md:DialogHost>
+        <md:DialogHost IsOpen="{Binding Vender}" x:Name="dialogError" Grid.ColumnSpan="3" Grid.RowSpan="2">
+            <md:DialogHost.DialogContent>
+                <Grid Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal" Grid.Column="1" Margin="20">
+                        <Button Grid.Column="2" Command="{Binding AbrirFormaPago}" CommandParameter="{Binding ElementName=textoEfectivo,Path=Text}" Height="80" Width="140"  Margin="10,30" Grid.Row="1">
+                            <StackPanel >
+                                <md:PackIcon Kind="Money" Height="50" Width="50" HorizontalAlignment="Center"/>
+                                <TextBlock Text="Efectivo" x:Name="textoEfectivo"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Grid.Column="2" Command="{Binding AbrirFormaPago}" CommandParameter="{Binding ElementName=textoCheque,Path=Text}" Height="80" Width="140" Margin="10,30" Grid.Row="1">
+                            <StackPanel >
+                                <md:PackIcon Kind="CheckBook"  Height="50" Width="50" HorizontalAlignment="Center"/>
+                                <TextBlock Text="Cheque"  x:Name="textoCheque"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Grid.Column="2" Command="{Binding AbrirFormaPago}" CommandParameter="{Binding ElementName=textoTransferencia,Path=Text}" Height="80" Width="140" Margin="10,30" Grid.Row="1">
+                            <StackPanel >
+                                <md:PackIcon Kind="BankTransferIn" Height="50" Width="50" HorizontalAlignment="Center"/>
+                                <TextBlock Text="Transferencia"  x:Name="textoTransferencia"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Grid.Column="2" Command="{Binding AbrirFormaPago}" CommandParameter="{Binding ElementName=textoDeposito,Path=Text}" Height="80" Width="140" Margin="10,30" Grid.Row="1">
+                            <StackPanel >
+                                <md:PackIcon Kind="BankTransfer" Height="50" Width="50" HorizontalAlignment="Center"/>
+                                <TextBlock Text="Deposito" x:Name="textoDeposito"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </md:DialogHost.DialogContent>
+        </md:DialogHost>
+        <md:DialogHost IsOpen="{Binding Efectivo}" Grid.ColumnSpan="3" Grid.RowSpan="2">
+            <md:DialogHost.DialogContent>
+                <Grid Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="1" Margin="20">
+                        <DatePicker md:HintAssist.Hint="Fecha" DisplayDateStart="01-01-2000" SelectedDateFormat="Short" SelectedDate="{Binding ComprobanteEntrada.Fecha}" Margin="0,5,0,3"/>
+                        <ComboBox SelectedItem="{Binding ComprobanteEntrada.TipoComprobanteEntrada}" md:HintAssist.Hint="Tipo de comprobante" IsEnabled="{Binding ControlesDialog}"  Style="{DynamicResource MaterialDesignFloatingHintComboBox}"  ItemsSource="{Binding Source={StaticResource enum}}" >
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding .,Converter={StaticResource Converter}}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <TextBox Style="{DynamicResource MaterialDesignFloatingHintTextBox}" Text="{Binding ComprobanteEntrada.Detalle}"  IsEnabled="{Binding ControlesDialog}" Width="300" TextWrapping="Wrap" md:HintAssist.Hint="Detalle"/>
+                        <TextBlock  HorizontalAlignment="Left" FontSize="16" FontFamily="Poppins" FontWeight="DemiBold" Text="{Binding ComprobanteEntrada.Monto,StringFormat=Total: {0:C}}"/>
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal"  Margin="0,20,0,0">
+                            <Button  Style="{DynamicResource MaterialDesignFlatButton}" Command="{Binding CobrarEfectivo}" Margin="0,0,15,0" Width="86" Content="Aceptar"/>
+                            <Button Margin="15,0,0,0" Content="Cancelar" Command="{x:Static md:DialogHost.CloseDialogCommand}"
+                        Style="{DynamicResource MaterialDesignFlatButton}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </md:DialogHost.DialogContent>
+        </md:DialogHost>
+        <md:DialogHost  IsOpen="{Binding Cheque}" Grid.ColumnSpan="3" Grid.RowSpan="2" >
+            <md:DialogHost.DialogContent>
+                <Grid Background="#D2E7EC" Height="232">
+                    <Grid Width="460" Margin="0,1,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="141"/>
+                            <RowDefinition Height="7*"/>
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0" Margin="10,46,10,47" Grid.RowSpan="2">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="72*"/>
+                                <RowDefinition Height="29*"/>
+                                <RowDefinition Height="22*"/>
+                            </Grid.RowDefinitions>
+                            <DatePicker  md:HintAssist.Hint="Fecha" SelectedDate="{Binding ChequeEntrada.FechaDesde}" TabIndex="3" HorizontalAlignment="Left" VerticalAlignment="Top" Width="127" Height="26"/>
+                            <TextBlock HorizontalAlignment="Left" Margin="0,45,0,0" TextWrapping="Wrap" Text="San Miguel de Tucumán" VerticalAlignment="Top"/>
+                            <TextBox PreviewTextInput="NumberValidationTextBox"  MaxLength="2" TabIndex="7" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"   Text="{Binding Dia}" HorizontalAlignment="Left" Height="23" Margin="138,38,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="43" HorizontalContentAlignment="Center"/>
+                            <TextBox PreviewTextInput="NumberValidationTextBox" MaxLength="2" TabIndex="8" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" Text="{Binding Mes}"  HorizontalAlignment="Left" Height="23" Margin="198,38,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="43" HorizontalContentAlignment="Center"/>
+                            <TextBox TabIndex="10" Text="{Binding ChequeEntrada.EmitidoPor}" HorizontalAlignment="Left" Height="23" Margin="77,67,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="363" Grid.RowSpan="2"/>
+                            <TextBox PreviewTextInput="NumberValidationTextBox"  MaxLength="4" TabIndex="9" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" Text="{Binding Ano}" HorizontalAlignment="Left" Height="23" Margin="257,38,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="43" HorizontalContentAlignment="Center"/>
+                            <TextBlock HorizontalAlignment="Left" Margin="181,45,0,0" TextWrapping="Wrap" Text="de" VerticalAlignment="Top" RenderTransformOrigin="5.971,0.773"/>
+                            <TextBlock HorizontalAlignment="Left" Margin="241,45,0,0" TextWrapping="Wrap" Text="de" VerticalAlignment="Top" RenderTransformOrigin="5.971,0.773"/>
+                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Emitido por" VerticalAlignment="Top" Margin="0,74,0,0" Grid.RowSpan="2"/>
+                            <TextBox TabIndex="11" Text="{Binding ChequeEntrada.Concepto}" IsEnabled="False"  HorizontalAlignment="Left" Height="23" Margin="89,20,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="341" Grid.RowSpan="2" Grid.Row="1"/>
+                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="En concepto de" VerticalAlignment="Top" Grid.Row="1" Margin="0,27,0,0" Grid.RowSpan="2"/>
+                            <TextBlock HorizontalAlignment="Left" Margin="178,10,0,0" TextWrapping="Wrap" Text="Serie " VerticalAlignment="Top"/>
+                            <TextBox TabIndex="4" Text="{Binding ChequeEntrada.Serie}" HorizontalAlignment="Left" Height="23" Margin="212,3,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="43" HorizontalContentAlignment="Center"/>
+                            <TextBlock HorizontalAlignment="Left" Margin="259,10,0,0" TextWrapping="Wrap" Text="N° " VerticalAlignment="Top"/>
+                            <TextBox PreviewTextInput="NumberValidationTextBox"  TabIndex="5" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" Text="{Binding ChequeEntrada.Numero}"  HorizontalAlignment="Left" Height="23" Margin="276,3,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="43" HorizontalContentAlignment="Center"/>
+                            <TextBlock HorizontalAlignment="Left" Margin="332,10,0,0" TextWrapping="Wrap" Text="$ " VerticalAlignment="Top"/>
+                            <TextBox PreviewTextInput="NumberValidationTextBox"  TabIndex="6" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"  Text="{Binding ChequeEntrada.Monto}" IsEnabled="False" HorizontalAlignment="Left" Height="23" Margin="349,3,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="81"/>
+                            <TextBlock HorizontalAlignment="Left" Margin="332,45,0,0" TextWrapping="Wrap" Text="$ " VerticalAlignment="Top"/>
+                            <TextBox PreviewTextInput="NumberValidationTextBox"  TabIndex="10" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"  Text="{Binding ChequeEntrada.MontoContado}" IsEnabled="{Binding ElementName=togglecontado,Path=IsChecked}"  HorizontalAlignment="Left" Height="23" Margin="349,38,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="81" />
+                            <ToggleButton x:Name="togglecontado" IsChecked="{Binding ChequeEntrada.Contado}" TabIndex="2" ToolTip="¿Tiene descontado?" Style="{StaticResource MaterialDesignSwitchToggleButton}" Margin="304,-36,66,87">
+                                <md:PackIcon Kind="MoneyOff" RenderTransformOrigin=".5,.5">
+                                    <md:PackIcon.RenderTransform>
+                                        <RotateTransform Angle="45" />
+                                    </md:PackIcon.RenderTransform>
+                                </md:PackIcon>
+                                <md:ToggleButtonAssist.OnContent>
+                                    <md:PackIcon Kind="Money" />
+                                </md:ToggleButtonAssist.OnContent>
+                            </ToggleButton>
+                            <TextBlock HorizontalAlignment="Left" Margin="254,-29,0,0" TextWrapping="Wrap" Text="Descontado " VerticalAlignment="Top" RenderTransformOrigin="0.362,0.47"/>
+                        </Grid>
+                        <Button TabIndex="12" Content="Registrar" Command="{Binding CargarCheque}"  HorizontalAlignment="Left" Margin="193,48,0,0" Grid.Row="1" VerticalAlignment="Top" Width="93"/>
+                        <Button TabIndex="13" Content="Borrar" Command="{Binding BorrarCommand}"  HorizontalAlignment="Left" Margin="291,48,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" RenderTransformOrigin="-0.027,0.531"/>
+                        <ComboBox IsEditable="True" md:HintAssist.Hint="Banco" IsReadOnly="True" ItemsSource="{Binding Bancos}" SelectedItem="{Binding ChequeEntrada.Banco}" DisplayMemberPath="RazonSocial" Margin="10,10,241,105" Height="26"/>
+                        <Button TabIndex="14" Content="Salir" Command="{Binding CancelarFormaPago}" CommandParameter="{Binding ElementName=textoCheque,Path=Text}"  HorizontalAlignment="Left" Margin="371,48,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" RenderTransformOrigin="-0.027,0.531"/>
+                    </Grid>
+                </Grid>
+            </md:DialogHost.DialogContent>
+        </md:DialogHost>
+        <md:DialogHost IsOpen="{Binding Transferencia}" Grid.ColumnSpan="3" Grid.RowSpan="2">
+            <md:DialogHost.DialogContent>
+                <Grid>
+                    <StackPanel Margin="10" Grid.Column="1">
+                        <ComboBox IsEditable="True" md:HintAssist.Hint="Banco" IsReadOnly="True" ItemsSource="{Binding Bancos}" SelectedItem="{Binding Banco}" DisplayMemberPath="RazonSocial" Width="300"/>
+                        <ComboBox IsEditable="True" Style="{DynamicResource MaterialDesignFloatingHintComboBox}"  DisplayMemberPath="RazonSocial"  IsEnabled="{Binding ControlesDialog}" Width="300" ItemsSource="{Binding Clientes}" SelectedItem="{Binding Cliente}" md:HintAssist.Hint="Cliente"/>
+                        <TextBox PreviewTextInput="NumberValidationTextBox"  Style="{DynamicResource MaterialDesignFloatingHintTextBox}" Text="{Binding Operacion.Numero}"  IsEnabled="{Binding ControlesDialog}" Width="300" md:HintAssist.Hint="Numero"/>
+                        <TextBox PreviewTextInput="NumberValidationTextBox"  Style="{DynamicResource MaterialDesignFloatingHintTextBox}" Text="{Binding SubtotalTrans,UpdateSourceTrigger=PropertyChanged}"  Width="300" md:HintAssist.Hint="Subtotal"/>
+                        <TextBox PreviewTextInput="NumberValidationTextBox"  Style="{DynamicResource MaterialDesignFloatingHintTextBox}" Text="{Binding Impuesto,UpdateSourceTrigger=PropertyChanged}"   Width="300" md:HintAssist.Hint="Impuesto bancario"/>
+                        <TextBox PreviewTextInput="NumberValidationTextBox"  Style="{DynamicResource MaterialDesignFloatingHintTextBox}" Text="{Binding Operacion.Debe}"  IsEnabled="False" Width="300" md:HintAssist.Hint="Total"/>
+                        <TextBox Style="{DynamicResource MaterialDesignFloatingHintTextBox}" IsEnabled="False" Text="{Binding Operacion.Concepto}"  Width="300" md:HintAssist.Hint="Concepto"/>
+                        <StackPanel Orientation="Horizontal" Margin="40,0">
+                            <ToggleButton IsChecked="{Binding Entrega}" x:Name="tog" ToolTip="¿Entrega inmediata?" HorizontalAlignment="Center" Margin="0,5,10,0">
+                                <md:PackIcon  Kind="CalendarRemoveOutline"  RenderTransformOrigin=".5,.5">
+                                    <md:PackIcon.RenderTransform>
+                                        <RotateTransform Angle="45" />
+                                    </md:PackIcon.RenderTransform>
+                                </md:PackIcon>
+                                <md:ToggleButtonAssist.OnContent>
+                                    <md:PackIcon Kind="CalendarBlank" />
+                                </md:ToggleButtonAssist.OnContent>
+                            </ToggleButton>
+                            <DatePicker HorizontalAlignment="Center" Style="{DynamicResource MaterialDesignFloatingHintDatePicker}"  IsEnabled="{Binding ElementName=tog ,Path=IsChecked}" Width="250" md:HintAssist.Hint="Fecha" SelectedDate="{Binding Operacion.FechaVencimiento}" DisplayDateStart="1900-01-01" />
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal"  Margin="0,20,0,0">
+                            <Button  Style="{DynamicResource MaterialDesignFlatButton}" Command="{Binding CargarTransferencia}" Margin="0,0,15,0" Width="86" Content="Aceptar"/>
+                            <Button Margin="15,0,0,0" Content="Cancelar" Command="{Binding CancelarFormaPago}" CommandParameter="{Binding ElementName=textoTransferencia,Path=Text}" Style="{DynamicResource MaterialDesignFlatButton}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </md:DialogHost.DialogContent>
+        </md:DialogHost>
+        <md:DialogHost IsOpen="{Binding Deposito}" Grid.ColumnSpan="3" Grid.RowSpan="2">
+            <md:DialogHost.DialogContent>
+                <Grid>
+                    <StackPanel Margin="10"  Grid.Column="1">
+                        <ComboBox IsEditable="True" Style="{DynamicResource MaterialDesignFloatingHintComboBox}"  IsEnabled="{Binding ControlesDialog}" Width="300" ItemsSource="{Binding Bancos}"    DisplayMemberPath="RazonSocial" SelectedItem="{Binding Banco}" md:HintAssist.Hint="Banco"/>
+                        <ComboBox IsEditable="True" Style="{DynamicResource MaterialDesignFloatingHintComboBox}"  IsEnabled="{Binding ControlesDialog}" Width="300" ItemsSource="{Binding Clientes}"  DisplayMemberPath="RazonSocial" SelectedItem="{Binding Cliente}" md:HintAssist.Hint="Cliente"/>
+                        <TextBox PreviewTextInput="NumberValidationTextBox"  Style="{DynamicResource MaterialDesignFloatingHintTextBox}" Text="{Binding Operacion.Debe}"  IsEnabled="False" Width="300" md:HintAssist.Hint="Monto"/>
+                        <TextBox Style="{DynamicResource MaterialDesignFloatingHintTextBox}" Text="{Binding Operacion.Concepto}"  IsEnabled="False" Width="300" md:HintAssist.Hint="Concepto"/>
+                        <TextBox PreviewTextInput="NumberValidationTextBox" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" Text="{Binding Operacion.CodigoCausal}"  IsEnabled="{Binding ControlesDialog}" Width="300" md:HintAssist.Hint="Numero"/>
+                        <DatePicker HorizontalAlignment="Center" Style="{DynamicResource MaterialDesignFloatingHintDatePicker}"  IsEnabled="{Binding ControlesDialog}" Width="250" md:HintAssist.Hint="Fecha" SelectedDate="{Binding Operacion.FechaVencimiento}" DisplayDateStart="1900-01-01" />
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal"  Margin="0,20,0,0">
+                            <Button  Style="{DynamicResource MaterialDesignFlatButton}" Command="{Binding CargarDeposito}" Margin="0,0,15,0" Width="86" Content="Aceptar"/>
+                            <Button Margin="15,0,0,0" Content="Cancelar" Command="{Binding CancelarFormaPago}" CommandParameter="{Binding ElementName=textoDeposito,Path=Text}" Style="{DynamicResource MaterialDesignFlatButton}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </md:DialogHost.DialogContent>
+        </md:DialogHost>
+    </Grid>
+</UserControl>
