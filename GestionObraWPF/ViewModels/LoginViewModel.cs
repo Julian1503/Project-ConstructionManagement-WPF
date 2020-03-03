@@ -57,9 +57,9 @@ namespace GestionObraWPF.ViewModels
             try
             {
                 ImBuzy = true;
-                var encrip = Encriptar.Encriptador(Password).Replace('/',' ');
+                var encrip = Encriptar.Encriptador(Password).Replace('/',' ').Replace('+','_');
 
-                var usuario = await ApiProcessor.GetApi<Model.UsuarioDto>($"Usuario/Login/{Usuario}/{encrip}");
+                var usuario = await ApiProcessor.GetApi<UsuarioDto>($"Usuario/Login/{Usuario}/{encrip}");
                 if (usuario != null)
                 {
                     WebServices.HttpClient.DefaultRequestHeaders.Authorization =

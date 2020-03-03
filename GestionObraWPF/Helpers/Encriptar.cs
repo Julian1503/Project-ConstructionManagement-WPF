@@ -91,7 +91,6 @@ namespace GestionObraWPF.Helpers
             // Configuro para que use encriptacion de 256 bits.
             rij.BlockSize = 128;
 
-
             // Declaro que si necesitara mas bytes agregue ceros.
             rij.Padding = PaddingMode.Zeros;
 

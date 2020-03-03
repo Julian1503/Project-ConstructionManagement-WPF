@@ -37,13 +37,13 @@ namespace GestionObraWPF.Views.Reportes
 
         private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            var lista = new List<DataGrid>();
-            lista.Add(Obra0);
-            lista.Add(Obra1);
-            lista.Add(Obra2);
-            lista.Add(Obra3);
-            Excel.ExportToExcelAndCsv(lista,"");
-            lista.Clear();
+            //var lista = new List<DataGrid>();
+            //lista.Add(Obra0);
+            //lista.Add(Obra1);
+            //lista.Add(Obra2);
+            //lista.Add(Obra3);
+            //Excel.ExportToExcelAndCsv(lista,"");
+            //lista.Clear();
         }
     }
 }

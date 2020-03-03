@@ -30,18 +30,16 @@ namespace GestionObraWPF.Servicios
                         var result = JsonConvert.DeserializeObject<T>(jsonResult);
                         return result;
                     }
-                    else
-                    {
-                        throw new Exception(response.ReasonPhrase);
-                    }
+
+                    throw new Exception(response.ReasonPhrase);
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                MessageBox.Show("Hubo un error con la consulta al servidor");
-                return T;
+                MessageBox.Show("Hubo un error con la consulta al servidor" + e);
+                throw new Exception();
+                //return T;
             }
-
         }
 
         public static async Task<string> PostApi<T>(T item, string urlString = "")
